@@ -1,4 +1,4 @@
-# Pronunciation-Learning-with-Translator
+# Pronunciation Learning with Translator
 We want to make an English reading application which can give feedback to users of what they’ve pronounced wrongly.
 
 Project ID: B21-CAP0067.
