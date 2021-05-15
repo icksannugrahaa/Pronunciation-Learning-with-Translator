@@ -17,4 +17,11 @@
     <string name="no_mistake_were_found">No mistake were found!</string>
     <string name="answer">Answer</string>
     <string name="question_test">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</string>
+    <string name="are_you_sure">ARE YOU SURE ?,</string>
+    <string name="leave_message">want leave from this task module</string>
+    <string name="cancel">Cancel</string>
+    <string name="yes">Yes</string>
+    <string name="wait_verification">Wait Verification</string>
+    <string name="verification_message">Please check your mail for account verification</string>
+    <string name="successfully_verification">Successfully Verification</string>
 </resources>

@@ -173,7 +173,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:backgroundTint="@color/green_200"
-            app:srcCompat="@drawable/ic_mic_white" />
+            android:src="@drawable/ic_mic_white" />
 
     </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
