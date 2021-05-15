@@ -4,9 +4,9 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.DisplayMetrics
-import com.ninepm.english.learn.R
 import com.ninepm.english.learn.databinding.ActivityMainBinding
 import com.ninepm.english.learn.ui.login.LoginActivity
+import com.ninepm.english.learn.ui.question.BasicQuestionActivity
 import com.ninepm.english.learn.utils.AnimationUtils.Companion.setAnimFlyUp
 import kotlinx.coroutines.*
 
@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         setAnim()
         binding.btnTry.setOnClickListener {
-            Intent(this, LessonActivity::class.java).apply {
+            Intent(this, BasicQuestionActivity::class.java).apply {
                 startActivity(this)
             }
         }
