@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.DisplayMetrics
 import com.ninepm.english.learn.R
 import com.ninepm.english.learn.databinding.ActivityMainBinding
+import com.ninepm.english.learn.ui.login.LoginActivity
 import com.ninepm.english.learn.utils.AnimationUtils.Companion.setAnimFlyUp
 import kotlinx.coroutines.*
 
