@@ -12,7 +12,7 @@
         android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar">
 
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/lesson_toolbar"
+            android:id="@+id/question_basic_toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/green_200"
@@ -47,12 +47,13 @@
                     app:layout_constraintTop_toTopOf="@+id/btn_back" />
 
 
-                <ImageView
+                <ImageButton
                     android:id="@+id/img_status"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_contact_support_white"
                     android:paddingEnd="16dp"
+                    android:background="@color/transparent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
