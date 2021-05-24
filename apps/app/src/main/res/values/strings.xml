@@ -24,4 +24,10 @@
     <string name="wait_verification">Wait Verification</string>
     <string name="verification_message">Please check your mail for account verification</string>
     <string name="successfully_verification">Successfully Verification</string>
+    <string name="title_about">How to use</string>
+    <string name="tutor1_about">1. click start to try, or click login if have account .</string>
+    <string name="tutor2_about">"2. at task activity, you can see the question. "</string>
+    <string name="tutor3_about">3. if you want to start, you can click          icon mic at rigth bottom for starting speach.</string>
+    <string name="tutor4_about">4. if you correct the question you can continue for next question.</string>
+    <string name="tutor5_about">5. you can have poin and you can see the poin.</string>
 </resources>
