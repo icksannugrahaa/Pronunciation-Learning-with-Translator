@@ -6,13 +6,13 @@
     android:layout_height="match_parent">
 
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/login_appbar"
+        android:id="@+id/registration_appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar">
 
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/login_toolbar"
+            android:id="@+id/registration_toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/green_200"
@@ -41,15 +41,15 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
-        android:id="@+id/login_nsv"
+        android:id="@+id/registration_nsv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
 
         <include
-            android:id="@+id/login_content_detail"
-            layout="@layout/login_content_detail" />
+            android:id="@+id/registration_content_detail"
+            layout="@layout/registration_content_detail" />
     </androidx.core.widget.NestedScrollView>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

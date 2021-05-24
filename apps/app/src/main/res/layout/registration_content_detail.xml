@@ -8,19 +8,19 @@
     <ImageView
         android:id="@+id/img_bg"
         android:layout_width="wrap_content"
-        android:layout_height="300dp"
+        android:layout_height="350dp"
         android:scaleType="fitXY"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/login_bg" />
+        app:srcCompat="@drawable/registration_bg" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/welcome"
+        android:text="@string/register"
         android:textColor="@color/white"
         android:textSize="24sp"
         android:textStyle="bold"
@@ -34,7 +34,6 @@
         android:id="@+id/login_form_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
         android:background="@drawable/login_form_bg"
         android:gravity="center"
         android:orientation="vertical"
@@ -49,7 +48,29 @@
             android:layout_marginEnd="4dp"
             >
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/idt_username"
+                android:id="@+id/reg_idt_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/ic_email_green"
+                android:drawablePadding="24dp"
+                android:hint="@string/email"
+                android:inputType="textEmailAddress"
+                android:backgroundTint="@color/white"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/line" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
+            >
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/reg_idt_username"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/ic_user_green"
@@ -72,7 +93,7 @@
             app:passwordToggleEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/idt_password"
+                android:id="@+id/reg_idt_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/white"
@@ -87,46 +108,17 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/btn_act_login"
+        android:id="@+id/btn_act_register"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
         android:layout_marginTop="40dp"
         android:layout_marginEnd="40dp"
         android:padding="12dp"
-        android:text="@string/login"
+        android:text="@string/register"
         app:layout_constraintEnd_toEndOf="@+id/login_form_layout"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="@+id/login_form_layout"
         app:layout_constraintTop_toBottomOf="@+id/login_form_layout" />
-
-    <Button
-        android:id="@+id/btn_register"
-        android:layout_width="130dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:padding="12dp"
-        android:text="@string/register"
-        android:textColor="@color/green_200"
-        android:backgroundTint="@color/white"
-        app:layout_constraintEnd_toEndOf="@+id/btn_act_login"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/login_form_layout"
-        app:layout_constraintTop_toBottomOf="@+id/btn_act_login" />
-
-    <Button
-        android:id="@+id/btn_act_gsignin"
-        android:layout_width="130dp"
-        android:layout_height="wrap_content"
-        android:text="@string/signin"
-        android:drawableLeft="@drawable/ic_gsignin"
-        android:textColor="@color/green_200"
-        android:backgroundTint="@color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/btn_register"
-        app:layout_constraintEnd_toEndOf="@+id/btn_act_login"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/btn_act_login"
-        app:layout_constraintTop_toTopOf="@+id/btn_register"
-        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

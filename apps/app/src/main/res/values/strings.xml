@@ -24,4 +24,8 @@
     <string name="wait_verification">Wait Verification</string>
     <string name="verification_message">Please check your mail for account verification</string>
     <string name="successfully_verification">Successfully Verification</string>
+    <string name="email">Email</string>
+    <string name="email_error_empty_message">Please enter email</string>
+    <string name="username_error_empty_message">Please enter username</string>
+    <string name="password_error_empty_message">Please enter password</string>
 </resources>
