@@ -28,4 +28,9 @@
     <string name="email_error_empty_message">Please enter email</string>
     <string name="username_error_empty_message">Please enter username</string>
     <string name="password_error_empty_message">Please enter password</string>
+    <string name="profile">Profile</string>
+    <string name="home">Home</string>
+    <string name="histories">Histories</string>
+    <string name="nav_drawer_open">Navigation Drawer Open</string>
+    <string name="nav_drawer_close">Navigation Drawer Close</string>
 </resources>

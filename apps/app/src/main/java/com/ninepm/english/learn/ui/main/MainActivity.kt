@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.util.Log
+import android.view.View
+import androidx.appcompat.app.ActionBarDrawerToggle
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.ninepm.english.learn.R
@@ -34,7 +36,6 @@ class MainActivity : AppCompatActivity() {
                 startActivity(this)
             }
         }
-
         auth = FirebaseAuth.getInstance()
         database = FirebaseDatabase.getInstance()
         databaseReference = database?.reference?.child("profile")
@@ -51,7 +52,7 @@ class MainActivity : AppCompatActivity() {
             Log.d("user_data_email", user.email.toString())
             with(binding) {
                 txtTitle.text = "Selamat Datang,"
-
+                btnNavDrawer.visibility = View.VISIBLE
                 userReference?.addValueEventListener(object: ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
                         Log.d("user_data_email", snapshot.child("username").toString())

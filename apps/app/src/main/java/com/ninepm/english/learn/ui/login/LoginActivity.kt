@@ -9,9 +9,7 @@ import com.ninepm.english.learn.R
 import com.ninepm.english.learn.databinding.ActivityLoginBinding
 import com.ninepm.english.learn.databinding.LoginContentDetailBinding
 import com.ninepm.english.learn.ui.main.MainActivity
-import com.ninepm.english.learn.ui.question.BasicQuestionActivity
 import com.ninepm.english.learn.ui.registration.RegistrationActivity
-import com.ninepm.english.learn.ui.verification.VerificationSuccessActivity
 import com.ninepm.english.learn.ui.verification.VerificationWaitActivity
 import com.ninepm.english.learn.utils.MyUtils.Companion.showToast
 
