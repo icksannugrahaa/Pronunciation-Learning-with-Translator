@@ -6,7 +6,14 @@
     </shared>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0e352b00-f288-484d-8236-6145bd314f61" name="Default Changelist" comment="" />
+    <list default="true" id="0e352b00-f288-484d-8236-6145bd314f61" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/apps/.idea/caches/build_file_checksums.ser" beforeDir="false" afterPath="$PROJECT_DIR$/apps/.idea/caches/build_file_checksums.ser" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/apps/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/apps/app/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/app/src/main/res/layout/question_basic_content_detail.xml" beforeDir="false" afterPath="$PROJECT_DIR$/apps/app/src/main/res/layout/question_basic_content_detail.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/apps/app/src/main/res/values/strings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/apps/build.gradle" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -30,7 +37,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="android.sdk.path" value="$USER_HOME$/Android/Sdk" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/apps" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.17" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -39,9 +46,7 @@
     <configuration default="true" type="AndroidJUnit" factoryName="Android JUnit">
       <option name="TEST_OBJECT" value="class" />
       <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
-      <method v="2">
-        <option name="Android.Gradle.BeforeRunTask" enabled="true" />
-      </method>
+      <method v="2" />
     </configuration>
     <configuration name="app" type="AndroidRunConfigurationType" factoryName="Android App">
       <module name="English_Learn.app" />
@@ -96,9 +101,7 @@
       <option name="ACTIVITY_CLASS" value="" />
       <option name="SEARCH_ACTIVITY_IN_GLOBAL_SCOPE" value="false" />
       <option name="SKIP_ACTIVITY_VALIDATION" value="false" />
-      <method v="2">
-        <option name="Android.Gradle.BeforeRunTask" enabled="true" />
-      </method>
+      <method v="2" />
     </configuration>
   </component>
   <component name="SvnConfiguration">

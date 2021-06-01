@@ -9,7 +9,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.EnglishLearn">
-        <activity android:name=".ui.about.AboutActivity"></activity>
+        <activity android:name=".ui.score.ScoreActivity"></activity>
+        <activity android:name=".ui.changepassword.ChangePasswordActivity" />
+        <activity android:name=".ui.profile.ProfileActivity" />
+        <activity android:name=".ui.history.HistoryActivity" />
+        <activity android:name=".ui.about.AboutActivity" />
         <activity android:name=".ui.verification.VerificationSuccessActivity" />
         <activity android:name=".ui.verification.VerificationWaitActivity" />
         <activity

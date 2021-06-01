@@ -27,7 +27,24 @@
     <string name="title_about">How to use</string>
     <string name="tutor1_about">1. click start to try, or click login if have account .</string>
     <string name="tutor2_about">"2. at task activity, you can see the question. "</string>
-    <string name="tutor3_about">3. if you want to start, you can click          icon mic at rigth bottom for starting speach.</string>
+    <string name="tutor3_about">3. if you want to start, you can click icon mic at rigth bottom for starting speach.</string>
     <string name="tutor4_about">4. if you correct the question you can continue for next question.</string>
     <string name="tutor5_about">5. you can have poin and you can see the poin.</string>
+    <string name="user">User123</string>
+    <string name="email">user123@gmail.com</string>
+    <string name="txt_poin_history">Poin History</string>
+    <string name="module">Basic Module</string>
+    <string name="score">90%</string>
+    <string name="text_name">Name</string>
+    <string name="name">User 234</string>
+    <string name="text_email">Email</string>
+    <string name="txt_change_profile">Change Profile</string>
+    <string name="txt_reset_password">RESET PASSWORD</string>
+    <string name="txt_enter_password">Enter your new password for your account</string>
+    <string name="txt_new_password">New Password</string>
+    <string name="txt_confirm_password">Confirm New Password</string>
+    <string name="txt_change_password">Change Password</string>
+    <string name="txt_new_score">NEW SCORE</string>
+    <string name="txt_value_score">80%</string>
+    <string name="save">Save</string>
 </resources>

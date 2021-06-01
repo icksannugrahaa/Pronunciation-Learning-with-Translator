@@ -46,6 +46,8 @@ dependencies {
     implementation "com.google.android.material:material:$material_version"
     implementation "androidx.constraintlayout:constraintlayout:$constraint_layout_version"
     implementation "com.github.ybq:Android-SpinKit:$spin_kit_version"
+    implementation "de.hdodenhof:circleimageview:$circleimageview_version"
+
 
     //testing
     testImplementation "junit:junit:$junit_version"
