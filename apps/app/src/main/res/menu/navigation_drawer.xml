@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
     <group
         android:id="@+id/group1"
         android:checkableBehavior="single">
@@ -16,5 +18,18 @@
             android:id="@+id/nav_drawer_histories"
             android:icon="@drawable/ic_history_green"
             android:title="@string/histories" />
+    </group>
+    <group
+        android:id="@+id/group2"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_drawer_change_password"
+            android:icon="@drawable/ic_change_password"
+            android:title="@string/change_password" />
+
+        <item
+            android:id="@+id/nav_drawer_about"
+            android:icon="@drawable/ic_info_black"
+            android:title="@string/about" />
     </group>
 </menu>

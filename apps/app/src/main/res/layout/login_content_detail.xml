@@ -49,20 +49,21 @@
             android:layout_marginEnd="4dp"
             >
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/idt_username"
+                android:id="@+id/idt_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/ic_user_green"
                 android:drawablePadding="24dp"
-                android:hint="@string/username"
-                android:inputType="text"
+                android:hint="@string/email"
+                android:inputType="textEmailAddress"
                 android:backgroundTint="@color/white"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/line" />
+            android:src="@drawable/line"
+            android:contentDescription="@string/username" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"

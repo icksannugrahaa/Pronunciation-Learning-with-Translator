@@ -3,34 +3,36 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/green_200"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/img_avatar"
+        android:id="@+id/nav_drawer_img_avatar"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:layout_marginEnd="6dp"
         android:layout_margin="16dp"
+        android:src="@drawable/logo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.527"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintVertical_bias="0.046"
         tools:src="@android:color/darker_gray" />
 
     <TextView
         android:id="@+id/nav_drawer_tv_username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:text="@string/username"
-        android:textStyle="bold"
         android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.143"
-        app:layout_constraintStart_toEndOf="@+id/img_avatar"
-        app:layout_constraintTop_toTopOf="@+id/img_avatar" />
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="@+id/nav_drawer_img_avatar"
+        app:layout_constraintStart_toStartOf="@+id/nav_drawer_img_avatar"
+        app:layout_constraintTop_toBottomOf="@+id/nav_drawer_img_avatar" />
 
     <TextView
         android:id="@+id/nav_drawer_tv_email"
@@ -39,8 +41,10 @@
         android:layout_marginTop="16dp"
         android:text="@string/email"
         android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        android:textColor="@color/white"
+        android:paddingBottom="16dp"
+        app:layout_constraintEnd_toEndOf="@+id/nav_drawer_tv_username"
+        app:layout_constraintHorizontal_bias="0.411"
         app:layout_constraintStart_toStartOf="@+id/nav_drawer_tv_username"
         app:layout_constraintTop_toBottomOf="@+id/nav_drawer_tv_username" />
 

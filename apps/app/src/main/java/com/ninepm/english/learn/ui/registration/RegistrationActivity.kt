@@ -1,22 +1,25 @@
 package com.ninepm.english.learn.ui.registration
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.view.View
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
+import androidx.lifecycle.ViewModelProvider
 import com.ninepm.english.learn.R
+import com.ninepm.english.learn.data.source.local.entity.User
 import com.ninepm.english.learn.databinding.ActivityRegistrationBinding
 import com.ninepm.english.learn.databinding.RegistrationContentDetailBinding
+import com.ninepm.english.learn.firebase.auth.FirebaseAuthConfig
+import com.ninepm.english.learn.firebase.auth.FirebaseAuthConfig.Companion.auth
+import com.ninepm.english.learn.ui.home.ViewModelFactory
+import com.ninepm.english.learn.ui.verification.VerificationWaitActivity
 import com.ninepm.english.learn.utils.MyUtils.Companion.showToast
 
 class RegistrationActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var binding: RegistrationContentDetailBinding
-    lateinit var auth: FirebaseAuth
-    var database: FirebaseDatabase? = null
-    var databaseReference: DatabaseReference? = null
+    private lateinit var viewModel: RegisterViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,10 +30,8 @@ class RegistrationActivity : AppCompatActivity(), View.OnClickListener {
         setContentView(registrationActivity.root)
         title = resources.getString(R.string.login)
 
-        auth = FirebaseAuth.getInstance()
-        database = FirebaseDatabase.getInstance()
-        databaseReference = database?.reference?.child("profile")
-
+        val factory = ViewModelFactory.getInstance(this)
+        viewModel = ViewModelProvider(this, factory)[RegisterViewModel::class.java]
     }
 
     private fun register() {
@@ -50,18 +51,34 @@ class RegistrationActivity : AppCompatActivity(), View.OnClickListener {
                 }
             }
 
-            auth.createUserWithEmailAndPassword(regIdtEmail.text.toString(), regIdtPassword.text.toString())
-                .addOnCompleteListener {
-                    if(it.isSuccessful) {
-                        val user = auth.currentUser
-                        val currentUser = databaseReference?.child(user!!.uid)
-                        currentUser?.child("username")?.setValue(regIdtUsername.text.toString())
-                        showToast("Registration success, please check email for activation!",this@RegistrationActivity)
-                        finish()
-                    } else {
-                        showToast("Registration failed, please try again!",this@RegistrationActivity)
+            viewModel.userRegister(
+                User(
+                    email = regIdtEmail.text.toString(),
+                    password = regIdtPassword.text.toString(),
+                    username = regIdtUsername.text.toString()
+                )
+            ).observe(this@RegistrationActivity) {
+                if (it) {
+                    showToast(
+                        "Registration success, please check email for activation!",
+                        this@RegistrationActivity
+                    )
+                    Intent(this@RegistrationActivity, VerificationWaitActivity::class.java).apply {
+                        this.putExtra(
+                            VerificationWaitActivity.USER_EMAIL,
+                            regIdtEmail.text.toString()
+                        )
+                        this.putExtra(
+                            VerificationWaitActivity.USER_PASS,
+                            regIdtPassword.text.toString()
+                        )
+                        startActivity(this)
                     }
+                    finish()
+                } else {
+                    showToast("Register failed, please try again later!", this@RegistrationActivity)
                 }
+            }
         }
     }
 
@@ -71,5 +88,10 @@ class RegistrationActivity : AppCompatActivity(), View.OnClickListener {
                 register()
             }
         }
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        finish()
     }
 }
