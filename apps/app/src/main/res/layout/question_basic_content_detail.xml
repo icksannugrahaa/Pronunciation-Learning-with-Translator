@@ -36,29 +36,41 @@
         app:layout_constraintStart_toStartOf="@+id/txt_question"
         app:layout_constraintTop_toBottomOf="@+id/txt_question">
 
-        <TextView
-            android:id="@+id/tv_lesson_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:text="@string/question_test"
-            android:textColor="@color/white"
-            android:textSize="16sp" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <ImageButton
-            android:id="@+id/img_answer_play"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/transparent"
-            android:layout_marginStart="330dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"
-            android:layout_gravity="bottom"
-            android:src="@drawable/ic_volume_up_blue"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="9.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:id="@+id/tv_lesson_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:text="@string/question_test"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="1.0" />
+
+            <ImageButton
+                android:id="@+id/img_answer_play"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:background="@color/transparent"
+                android:src="@drawable/ic_volume_up_blue"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.941" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.cardview.widget.CardView>
 
@@ -125,9 +137,11 @@
     <ProgressBar
         android:id="@+id/progress_bar_horizontal"
         style="@android:style/Widget.ProgressBar.Horizontal"
-        android:layout_width="300dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
+        android:layout_marginEnd="84dp"
+        android:layout_marginStart="16dp"
         android:progress="100"
         android:progressDrawable="@drawable/progress_bar_custom"
         app:layout_constraintStart_toStartOf="@+id/cv_correction"
@@ -141,29 +155,23 @@
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="@+id/progress_bar_horizontal"
         app:layout_constraintEnd_toEndOf="@id/progress_bar_horizontal"
+        app:layout_constraintHorizontal_bias="0.397"
         app:layout_constraintStart_toStartOf="@+id/progress_bar_horizontal"
         app:layout_constraintTop_toTopOf="@+id/progress_bar_horizontal"
         app:layout_constraintVertical_bias="1.0" />
 
-    <RelativeLayout
-        android:id="@+id/bottomLay"
-        android:layout_width="match_parent"
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btn_act_record"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="16dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cv_correction">
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="16dp"
+        android:backgroundTint="@color/green_200"
+        android:src="@drawable/ic_mic_white"
+        app:layout_constraintBottom_toBottomOf="@+id/progress_bar_horizontal"
+        app:layout_constraintEnd_toEndOf="@+id/cv_correction"
+        app:layout_constraintTop_toTopOf="@+id/progress_bar_horizontal"
+        app:layout_constraintVertical_bias="0.444"
+        android:contentDescription="@string/answer" />
 
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/btn_act_record"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="1dp"
-            android:backgroundTint="@color/green_200"
-            android:src="@drawable/ic_mic_white" />
-
-    </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
