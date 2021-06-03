@@ -12,6 +12,7 @@ buildscript {
     ext.circleimage_version = "3.1.0"
     ext.glide_version = "4.12.0"
     ext.legacysupport_version = "1.0.0"
+    ext.circleimageview_version = "3.1.0"
 
     ext.junit_version = "4.13.2"
     ext.junit_ext_version = "1.1.2"
@@ -35,6 +36,7 @@ allprojects {
     repositories {
         google()
         jcenter()
+        maven { url "https://jitpack.io" }
     }
 }
 

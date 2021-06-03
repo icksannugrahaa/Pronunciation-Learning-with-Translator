@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.profile.ProfileActivity">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/img_profile"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/history_user"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/btn_change_foto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="64dp"
+        android:background="@color/transparent"
+        android:src="@drawable/profile_camera"
+        app:layout_constraintBottom_toBottomOf="@+id/img_profile"
+        app:layout_constraintStart_toStartOf="@+id/img_profile"
+        app:layout_constraintTop_toTopOf="@+id/img_profile"
+        app:layout_constraintVertical_bias="1.0" />
+
+
+    <RelativeLayout
+        android:id="@+id/rl_profile"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginTop="48dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/img_profile">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/txt_name_profile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:gravity="left"
+                android:text="@string/text_name"
+                android:textColor="@color/grey_500"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/input_name_profile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="244dp"
+                android:layout_marginEnd="16dp"
+                android:background="@color/transparent"
+                android:text="@string/name"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@+id/txt_name_profile"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/txt_name_profile"
+                app:layout_constraintTop_toTopOf="@+id/txt_name_profile"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <View
+                android:id="@+id/line_profile"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:background="@android:color/darker_gray"
+                app:layout_constraintEnd_toEndOf="@+id/input_name_profile"
+                app:layout_constraintHorizontal_bias="0.528"
+                app:layout_constraintStart_toStartOf="@+id/txt_name_profile"
+                app:layout_constraintTop_toBottomOf="@+id/txt_name_profile" />
+
+            <TextView
+                android:id="@+id/txt_email_profile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:gravity="left"
+                android:text="@string/text_email"
+                android:textColor="@color/grey_500"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="@+id/line_profile"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/line_profile"
+                app:layout_constraintTop_toBottomOf="@+id/line_profile" />
+
+            <TextView
+                android:id="@+id/input_email_profile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/email"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@+id/txt_email_profile"
+                app:layout_constraintEnd_toEndOf="@+id/line_profile"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/txt_email_profile"
+                app:layout_constraintTop_toTopOf="@+id/txt_email_profile"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <View
+                android:id="@+id/line_email_profile"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:background="@android:color/darker_gray"
+                app:layout_constraintEnd_toEndOf="@+id/input_email_profile"
+                app:layout_constraintStart_toStartOf="@+id/txt_email_profile"
+                app:layout_constraintTop_toBottomOf="@+id/txt_email_profile" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/btn_change_profile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:text="@string/txt_change_profile"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/rl_profile"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/rl_profile"
+        app:layout_constraintTop_toBottomOf="@+id/rl_profile"
+        app:layout_constraintVertical_bias="0.957" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

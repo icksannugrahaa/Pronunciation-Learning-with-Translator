@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/txt_title_about"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0dp"
+        android:text="@string/title_about"
+        android:textColor="@color/green_700"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txt_tutor1_about"
+        android:layout_width="305dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/tutor1_about"
+        android:textColor="@color/green_700"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_title_about" />
+
+    <ImageView
+        android:id="@+id/tutor1_about"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/about_tutor1"
+        app:layout_constraintEnd_toEndOf="@+id/txt_tutor1_about"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/txt_tutor1_about"
+        app:layout_constraintTop_toBottomOf="@+id/txt_tutor1_about" />
+
+    <TextView
+        android:id="@+id/txt_tutor2_about"
+        android:layout_width="305dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/tutor2_about"
+        android:textColor="@color/green_700"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="@+id/tutor1_about"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/tutor1_about"
+        app:layout_constraintTop_toBottomOf="@+id/tutor1_about" />
+
+    <ImageView
+        android:id="@+id/tutor2_about"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/about_tutor2"
+        app:layout_constraintEnd_toEndOf="@+id/txt_tutor2_about"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/txt_tutor2_about"
+        app:layout_constraintTop_toBottomOf="@+id/txt_tutor2_about" />
+
+    <TextView
+        android:id="@+id/txt_tutor3_about"
+        android:layout_width="309dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/tutor3_about"
+        android:textColor="@color/green_700"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="@+id/tutor2_about"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/tutor2_about"
+        app:layout_constraintTop_toBottomOf="@+id/tutor2_about" />
+
+    <ImageView
+        android:id="@id/tutor3_about"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/about_tutor3"
+        app:layout_constraintEnd_toEndOf="@+id/txt_tutor3_about"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/txt_tutor3_about"
+        app:layout_constraintTop_toBottomOf="@+id/txt_tutor3_about" />
+
+    <TextView
+        android:id="@+id/txt_tutor4_about"
+        android:layout_width="308dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/tutor4_about"
+        android:textColor="@color/green_700"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="@+id/tutor3_about"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/tutor3_about"
+        app:layout_constraintTop_toBottomOf="@+id/tutor3_about" />
+
+    <ImageView
+        android:id="@+id/tutor4_about"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/about_tutor4"
+        app:layout_constraintEnd_toEndOf="@+id/txt_tutor4_about"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/txt_tutor4_about"
+        app:layout_constraintTop_toBottomOf="@+id/txt_tutor4_about"/>
+
+    <TextView
+        android:id="@+id/txt_tutor5_about"
+        android:layout_width="308dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/tutor5_about"
+        android:textColor="@color/green_700"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="@+id/tutor4_about"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/tutor4_about"
+        app:layout_constraintTop_toBottomOf="@+id/tutor4_about" />
+
+    <ImageView
+        android:id="@+id/tutor5_about"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/about_tutor5"
+        app:layout_constraintEnd_toEndOf="@+id/txt_tutor5_about"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/txt_tutor5_about"
+        app:layout_constraintTop_toBottomOf="@+id/txt_tutor5_about"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,6 +4,8 @@
     package="com.ninepm.english.learn">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
         android:allowBackup="true"
@@ -16,6 +18,11 @@
         tools:targetApi="m">
         <activity android:name=".ui.registration.RegistrationActivity"
             android:theme="@style/Theme.EnglishLearn.NoActionBar"/>
+        <activity android:name=".ui.score.ScoreActivity" />
+        <activity android:name=".ui.changepassword.ChangePasswordActivity" />
+        <activity android:name=".ui.profile.ProfileActivity" />
+        <activity android:name=".ui.history.HistoryActivity" />
+        <activity android:name=".ui.about.AboutActivity" />
         <activity android:name=".ui.verification.VerificationSuccessActivity" />
         <activity android:name=".ui.verification.VerificationWaitActivity" />
         <activity
