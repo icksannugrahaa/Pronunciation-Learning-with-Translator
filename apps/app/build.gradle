@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -48,13 +49,23 @@ dependencies {
     implementation "com.google.android.material:material:$material_version"
     implementation "androidx.constraintlayout:constraintlayout:$constraint_layout_version"
     implementation "com.github.ybq:Android-SpinKit:$spin_kit_version"
+    implementation "androidx.legacy:legacy-support-v4:$legacysupport_version"
+    implementation "com.github.bumptech.glide:glide:$glide_version"
     implementation "de.hdodenhof:circleimageview:$circleimageview_version"
-
+    implementation 'fun.mike:diff-match-patch:0.0.2'
+    implementation 'me.xdrop:fuzzywuzzy:1.1.7'
 
     //testing
     testImplementation "junit:junit:$junit_version"
     androidTestImplementation "androidx.test.ext:junit:$junit_ext_version"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_core_version"
 
-    //
+    //firebase
+    implementation platform('com.google.firebase:firebase-bom:28.0.1')
+    implementation 'com.google.firebase:firebase-analytics'
+    implementation 'com.google.firebase:firebase-auth:21.0.1'
+    implementation 'com.google.firebase:firebase-database:20.0.0'
+
+    //fuzzy wuzzy
+    implementation "com.willowtreeapps:fuzzywuzzy-kotlin:0.1.1"
 }

@@ -1,62 +1,118 @@
 package com.ninepm.english.learn.ui.main
 
-import android.content.Intent
+import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.DisplayMetrics
+import android.util.Log
+import android.view.MenuItem
+import android.view.View
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.core.view.GravityCompat
+import androidx.core.view.isVisible
+import androidx.core.view.marginTop
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.navigation.NavigationView
+import com.ninepm.english.learn.R
 import com.ninepm.english.learn.databinding.ActivityMainBinding
-import com.ninepm.english.learn.ui.login.LoginActivity
-import com.ninepm.english.learn.ui.question.BasicQuestionActivity
-import com.ninepm.english.learn.utils.AnimationUtils.Companion.setAnimFlyUp
-import kotlinx.coroutines.*
+import com.ninepm.english.learn.firebase.auth.FirebaseAuthConfig.Companion.auth
+import com.ninepm.english.learn.ui.home.HomeFragment
+import com.ninepm.english.learn.ui.home.HomeViewModel
+import com.ninepm.english.learn.ui.home.ViewModelFactory
+import com.ninepm.english.learn.utils.MyUtils.Companion.loadDrawable
+import com.ninepm.english.learn.utils.MyUtils.Companion.loadImage
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private lateinit var binding: ActivityMainBinding
+    private lateinit var viewModel: HomeViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        setAnim()
-        binding.btnTry.setOnClickListener {
-            Intent(this, BasicQuestionActivity::class.java).apply {
-                startActivity(this)
-            }
-        }
-        binding.btnLogin.setOnClickListener {
-            Intent(this, LoginActivity::class.java).apply {
-                startActivity(this)
-            }
-        }
-    }
-    private fun getBackgroundHeight(): Float {
-        val displayMetrics = DisplayMetrics()
-        @Suppress("DEPRECATION")
-        windowManager.defaultDisplay.getMetrics(displayMetrics)
-        return if(displayMetrics.widthPixels <= 720) {
-            -1100F
-        } else {
-            -1470F
-        }
-    }
-    private fun setAnim() {
-        binding.apply {
-            bgSplashscreen.animate().translationY(getBackgroundHeight()).setDuration(600).startDelay = 400
-            txtIntroduce.animate().translationY(140F).alpha(0F).startDelay = 400
-            GlobalScope.launch {
-                startAnimDelay(600)
-            }
+        setSupportActionBar(binding.appBarMain.toolbar)
+
+        val factory = ViewModelFactory.getInstance(this)
+        viewModel = ViewModelProvider(this, factory)[HomeViewModel::class.java]
+
+        val toggle = ActionBarDrawerToggle(
+            this,
+            binding.drawerLayout,
+            binding.appBarMain.toolbar,
+            R.string.navigation_drawer_open,
+            R.string.navigation_drawer_close
+        )
+        filterMenu()
+        binding.drawerLayout.addDrawerListener(toggle)
+        toggle.syncState()
+        binding.navView.setNavigationItemSelectedListener(this)
+        if (savedInstanceState == null) {
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.nav_host_fragment, HomeFragment())
+                .commit()
+            supportActionBar?.title = getString(R.string.app_name)
         }
     }
-    private suspend fun startAnimDelay(length: Long) = withContext(Dispatchers.Main) {
-        delay(length)
-        binding.apply {
-            txtTitle.setAnimFlyUp(this@MainActivity)
-            txtSubtitle.setAnimFlyUp(this@MainActivity)
-            txtOr.setAnimFlyUp(this@MainActivity)
-            btnTry.setAnimFlyUp(this@MainActivity)
-            btnLogin.setAnimFlyUp(this@MainActivity)
-            imgBg.setAnimFlyUp(this@MainActivity)
+
+    override fun onResume() {
+        super.onResume()
+        filterMenu()
+    }
+
+    @SuppressLint("UseCompatLoadingForDrawables")
+    private fun filterMenu() {
+        val menu = binding.navView.menu
+        val header = binding.navView.getHeaderView(0)
+        Log.d("firebase_menu", "isRunning")
+        viewModel.getUser().observe(this, { response ->
+            if (response.uid != null && response.isVerified!!) {
+                header.isVisible = true
+                header.findViewById<TextView>(R.id.nav_drawer_tv_email).text = response.email
+                header.findViewById<TextView>(R.id.nav_drawer_tv_username).text = response.username
+                if(response.profilePath != null) {
+                    header.findViewById<ImageView>(R.id.nav_drawer_img_avatar).loadImage(response.profilePath)
+                } else {
+                    header.findViewById<ImageView>(R.id.nav_drawer_img_avatar).loadDrawable(R.drawable.user_default)
+                }
+                menu.findItem(R.id.nav_drawer_profile).isVisible = true
+                menu.findItem(R.id.nav_drawer_histories).isVisible = true
+                menu.findItem(R.id.nav_drawer_change_password).isVisible = true
+
+            } else {
+                header.isVisible = false
+                menu.findItem(R.id.nav_drawer_profile).isVisible = false
+                menu.findItem(R.id.nav_drawer_histories).isVisible = false
+                menu.findItem(R.id.nav_drawer_change_password).isVisible = false
+            }
+        })
+    }
+
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        var fragment: Fragment? = null
+        var title = getString(R.string.app_name)
+        when (item.itemId) {
+            R.id.nav_drawer_home -> {
+                fragment = HomeFragment()
+                title = getString(R.string.app_name)
+            }
+//            R.id.nav_favorite -> {
+//                fragment = FavoriteFragment()
+//                title = getString(R.string.menu_favorite)
+//            }
+//            R.id.nav_map -> {
+//                Toast.makeText(this, "Coming soon", Toast.LENGTH_SHORT).show()
+//            }
         }
+        if (fragment != null) {
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.nav_host_fragment, fragment)
+                .commit()
+        }
+        supportActionBar?.title = title
+
+        binding.drawerLayout.closeDrawer(GravityCompat.START)
+        return true
     }
 }
