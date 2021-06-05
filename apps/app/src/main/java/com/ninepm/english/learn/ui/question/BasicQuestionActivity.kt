@@ -5,7 +5,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
 import android.content.res.ColorStateList
-import android.media.AudioFormat
 import android.media.MediaPlayer
 import android.media.MediaRecorder
 import android.os.Build
@@ -20,22 +19,28 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.ninepm.english.learn.R
 import com.ninepm.english.learn.databinding.ActivityQuestionBasicBinding
 import com.ninepm.english.learn.databinding.QuestionBasicContentDetailBinding
+import com.ninepm.english.learn.utils.MyUtils.Companion.loadDrawable
 import com.ninepm.english.learn.utils.MyUtils.Companion.showToast
 import com.ninepm.english.learn.utils.RecorderService
 import com.ninepm.english.learn.utils.TextToSpeechServices
+import com.ninepm.english.learn.utils.TimerService
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import me.xdrop.fuzzywuzzy.FuzzySearch
 import java.io.File
 
+
 @SuppressLint("UseCompatLoadingForDrawables")
+@RequiresApi(Build.VERSION_CODES.M)
 class BasicQuestionActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var binding: QuestionBasicContentDetailBinding
     private lateinit var mediaRecorder: MediaRecorder
     private lateinit var mediaPlayer: MediaPlayer
     private lateinit var ttsService: TextToSpeechServices
     private lateinit var recorderService: RecorderService
+    private lateinit var timerService: TimerService
 
     var path = Environment.getExternalStorageDirectory().toString() + "/record.wav"
     private val scope = MainScope()
@@ -54,7 +59,11 @@ class BasicQuestionActivity : AppCompatActivity(), View.OnClickListener {
         binding = basicQuestionActivity.questionBasicContentDetail
         setSupportActionBar(basicQuestionActivity.questionBasicToolbar)
         setContentView(basicQuestionActivity.root)
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED)
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.RECORD_AUDIO
+            ) != PackageManager.PERMISSION_GRANTED
+        )
             ActivityCompat.requestPermissions(
                 this, arrayOf(
                     Manifest.permission.RECORD_AUDIO,
@@ -66,6 +75,7 @@ class BasicQuestionActivity : AppCompatActivity(), View.OnClickListener {
         mediaPlayer = MediaPlayer()
         recorderService = RecorderService()
         recorderService.WavRecorder(path)
+        timerService = TimerService()
 
         binding.btnActRecord.setOnClickListener(this)
         binding.imgAnswerPlay.setOnClickListener(this)
@@ -78,9 +88,17 @@ class BasicQuestionActivity : AppCompatActivity(), View.OnClickListener {
         editor.putString(PLAYER_STATE, "stop")
         editor.putString(RECORDER_STATE, "stop")
         editor.apply()
+
+//        Log.d(
+//            "search_fuzzy", (
+//                    FuzzySearch.ratio(
+//                        "The paper on which the printing is to be done is a necessary part of our subject",
+//                        "the paper on which the printing is to be done is a necessary part of ou ou subject"
+//                    )
+//                    ).toString()
+//        )
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
     override fun onClick(v: View?) {
         val preferences = this.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         when (v?.id) {
@@ -110,7 +128,7 @@ class BasicQuestionActivity : AppCompatActivity(), View.OnClickListener {
                                     theme
                                 )
                             )
-                            startUpdate()
+                            startUpdateTTS()
                         }
                     }
                 }
@@ -118,7 +136,7 @@ class BasicQuestionActivity : AppCompatActivity(), View.OnClickListener {
             R.id.btn_act_record -> {
                 if (preferences.getString(RECORDER_STATE, "null").equals("stop")) {
                     val editor = preferences.edit()
-                    editor.putString(RECORDER_STATE, "record")
+                    editor.putString(RECORDER_STATE, "waiting")
                     editor.apply()
 
                     binding.btnActRecord.backgroundTintList = ColorStateList.valueOf(
@@ -129,15 +147,8 @@ class BasicQuestionActivity : AppCompatActivity(), View.OnClickListener {
                     )
 
                     showToast("Start record!", this)
-                    recorderService.startRecording()
-//                    mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC)
-//                    mediaRecorder.setOutputFormat(AudioFormat.ENCODING_PCM_16BIT)
-//                    mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
-//                    mediaRecorder.setAudioChannels(AudioFormat.CHANNEL_IN_MONO)
-//                    mediaRecorder.setAudioSamplingRate(22050)
-//                    mediaRecorder.setOutputFile(path)
-//                    mediaRecorder.prepare()
-//                    mediaRecorder.start()
+                    startUpdateRecording()
+//                    timerService.startTimer({ recorderService.startRecording() }, 13)
 
                 } else {
                     val editor = preferences.edit()
@@ -150,14 +161,8 @@ class BasicQuestionActivity : AppCompatActivity(), View.OnClickListener {
                             theme
                         )
                     )
-
-                    val regex = """a([bc]+)d?""".toRegex()
-                    val matchResult = regex.find("abcb abbd")
-//                    Log.d("fuzzy", StringUtils.difference())
-
                     showToast("Stop record!", this)
                     recorderService.stopRecording()
-//                    mediaRecorder.stop()
                 }
             }
         }
@@ -170,7 +175,7 @@ class BasicQuestionActivity : AppCompatActivity(), View.OnClickListener {
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == 111 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
-        showToast("Permission granted!", this)
+            showToast("Permission granted!", this)
     }
 
     private fun showAlertExitDialog() {
@@ -192,14 +197,51 @@ class BasicQuestionActivity : AppCompatActivity(), View.OnClickListener {
         showAlertExitDialog()
     }
 
-    private fun startUpdate() {
+    private fun startUpdateRecording() {
+        val preferences = this.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        stopUpdates()
+        Log.d("STATUS_RECORD", preferences.getString(RECORDER_STATE, "null").toString())
+        if (preferences.getString(RECORDER_STATE, "null").equals("waiting")) {
+            job = scope.launch {
+                showCountDown(true)
+                delay(3000)
+                showCountDown(false)
+                val editor = preferences.edit()
+                editor.putString(RECORDER_STATE, "recording")
+                editor.apply()
+                startUpdateRecording()
+            }
+
+        } else if (preferences.getString(RECORDER_STATE, "null").equals("recording")) {
+            job = scope.launch {
+                recorderService.startRecording()
+                delay(10000)
+                val editor = preferences.edit()
+                editor.putString(RECORDER_STATE, "stop")
+                editor.apply()
+
+                binding.btnActRecord.backgroundTintList = ColorStateList.valueOf(
+                    resources.getColor(
+                        R.color.green_200,
+                        theme
+                    )
+                )
+
+                showToast("Stop record!", this@BasicQuestionActivity)
+                recorderService.stopRecording()
+                stopUpdates()
+            }
+        }
+    }
+
+    private fun startUpdateTTS() {
         val preferences = this.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         stopUpdates()
         job = scope.launch {
-            while(ttsService.isSpeak()) {
+            while (ttsService.isSpeak()) {
                 delay(1000)
             }
-            if(!ttsService.isSpeak()) {
+            if (!ttsService.isSpeak()) {
                 binding.imgAnswerPlay.setImageDrawable(
                     resources.getDrawable(
                         R.drawable.ic_volume_up_blue,
@@ -219,6 +261,17 @@ class BasicQuestionActivity : AppCompatActivity(), View.OnClickListener {
     private fun stopUpdates() {
         job?.cancel()
         job = null
+    }
+
+    private fun showCountDown(state: Boolean) {
+        binding.imgCountdown.loadDrawable(R.drawable.countdown)
+        if (state) {
+            binding.imgCountdown.visibility = View.VISIBLE
+            binding.cvCorrection.visibility = View.GONE
+        } else {
+            binding.imgCountdown.visibility = View.GONE
+            binding.cvCorrection.visibility = View.VISIBLE
+        }
     }
 
     public override fun onDestroy() {
