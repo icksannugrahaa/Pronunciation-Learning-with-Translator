@@ -60,4 +60,6 @@
     <string name="txt_new_score">NEW SCORE</string>
     <string name="txt_value_score">80%</string>
     <string name="save">Save</string>
+    <string name="getting_ready">Getting Ready!</string>
+    <string name="time_is_up">Time is up!</string>
 </resources>

@@ -4,24 +4,14 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.ninepm.english.learn.R
 import com.ninepm.english.learn.data.source.local.entity.User
 import com.ninepm.english.learn.databinding.ActivityVerificationWaitBinding
-import com.ninepm.english.learn.databinding.FragmentHomeBinding
-import com.ninepm.english.learn.firebase.auth.FirebaseAuthConfig
-import com.ninepm.english.learn.firebase.auth.FirebaseAuthConfig.Companion.auth
-import com.ninepm.english.learn.ui.home.HomeViewModel
 import com.ninepm.english.learn.ui.home.ViewModelFactory
-import com.ninepm.english.learn.ui.login.LoginActivity
-import com.ninepm.english.learn.ui.login.LoginViewModel
-import com.ninepm.english.learn.utils.MyUtils.Companion.loadDrawable
-import com.ninepm.english.learn.utils.MyUtils.Companion.loadImage
+import com.ninepm.english.learn.utils.MyUtils.Companion.loadGIFDrawable
 import kotlinx.coroutines.*
-import kotlinx.coroutines.NonCancellable.isActive
-import java.util.concurrent.TimeUnit
 
 class VerificationWaitActivity : AppCompatActivity() {
     private lateinit var viewModel: VerificationViewModel
@@ -41,8 +31,8 @@ class VerificationWaitActivity : AppCompatActivity() {
         val factory = ViewModelFactory.getInstance(this)
         viewModel = ViewModelProvider(this, factory)[VerificationViewModel::class.java]
 
-        binding.imageView.loadDrawable(R.drawable.anim_wait_hour)
-        binding.imageView2.loadDrawable(R.drawable.anim_wait_woman)
+        binding.imageView.loadGIFDrawable(R.drawable.anim_wait_hour, true)
+        binding.imageView2.loadGIFDrawable(R.drawable.anim_wait_woman, true)
 
 //        Glide.with(this)
 //            .load(R.drawable.anim_wait_woman)

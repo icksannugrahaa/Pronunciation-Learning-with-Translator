@@ -2,6 +2,7 @@ package com.ninepm.english.learn.ui.question
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Dialog
 import android.content.Context
 import android.content.pm.PackageManager
 import android.content.res.ColorStateList
@@ -12,14 +13,17 @@ import android.os.Bundle
 import android.os.Environment
 import android.util.Log
 import android.view.View
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.ninepm.english.learn.R
 import com.ninepm.english.learn.databinding.ActivityQuestionBasicBinding
+import com.ninepm.english.learn.databinding.CountdownDialogBinding
 import com.ninepm.english.learn.databinding.QuestionBasicContentDetailBinding
-import com.ninepm.english.learn.utils.MyUtils.Companion.loadDrawable
+import com.ninepm.english.learn.utils.MyUtils.Companion.loadGIFDrawable
 import com.ninepm.english.learn.utils.MyUtils.Companion.showToast
 import com.ninepm.english.learn.utils.RecorderService
 import com.ninepm.english.learn.utils.TextToSpeechServices
@@ -36,6 +40,7 @@ import java.io.File
 @RequiresApi(Build.VERSION_CODES.M)
 class BasicQuestionActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var binding: QuestionBasicContentDetailBinding
+    private lateinit var bindingCountDownLayout: CountdownDialogBinding
     private lateinit var mediaRecorder: MediaRecorder
     private lateinit var mediaPlayer: MediaPlayer
     private lateinit var ttsService: TextToSpeechServices
@@ -59,6 +64,7 @@ class BasicQuestionActivity : AppCompatActivity(), View.OnClickListener {
         binding = basicQuestionActivity.questionBasicContentDetail
         setSupportActionBar(basicQuestionActivity.questionBasicToolbar)
         setContentView(basicQuestionActivity.root)
+        bindingCountDownLayout = CountdownDialogBinding.inflate(layoutInflater, binding.root, false)
         if (ActivityCompat.checkSelfPermission(
                 this,
                 Manifest.permission.RECORD_AUDIO
@@ -145,10 +151,7 @@ class BasicQuestionActivity : AppCompatActivity(), View.OnClickListener {
                             theme
                         )
                     )
-
-                    showToast("Start record!", this)
                     startUpdateRecording()
-//                    timerService.startTimer({ recorderService.startRecording() }, 13)
 
                 } else {
                     val editor = preferences.edit()
@@ -161,8 +164,9 @@ class BasicQuestionActivity : AppCompatActivity(), View.OnClickListener {
                             theme
                         )
                     )
-                    showToast("Stop record!", this)
                     recorderService.stopRecording()
+                    showTimeCountDown(false)
+                    stopUpdates()
                 }
             }
         }
@@ -193,19 +197,35 @@ class BasicQuestionActivity : AppCompatActivity(), View.OnClickListener {
             .show()
     }
 
+    private fun showNotifDialog(dialog: Dialog, source: Int, title: String, state: Boolean) {
+        if(!state) {
+            dialog.dismiss()
+        } else {
+            dialog.setContentView(R.layout.countdown_dialog)
+            dialog.findViewById<ImageView>(R.id.img_countdown).loadGIFDrawable(source, false)
+            dialog.findViewById<TextView>(R.id.tv_dialog_title).text = title
+            dialog.window?.setBackgroundDrawable(resources.getDrawable(R.color.transparent, theme))
+            dialog.create()
+            dialog.show()
+        }
+        Log.d("STATUS_DIALOG", dialog.isShowing.toString())
+    }
+
     override fun onBackPressed() {
         showAlertExitDialog()
     }
 
     private fun startUpdateRecording() {
         val preferences = this.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        val dialog = Dialog(this)
         stopUpdates()
         Log.d("STATUS_RECORD", preferences.getString(RECORDER_STATE, "null").toString())
         if (preferences.getString(RECORDER_STATE, "null").equals("waiting")) {
             job = scope.launch {
-                showCountDown(true)
-                delay(3000)
-                showCountDown(false)
+                showNotifDialog(dialog, R.drawable.countdown, resources.getString(R.string.getting_ready), true)
+                delay(5000)
+                showNotifDialog(dialog, R.drawable.countdown, resources.getString(R.string.getting_ready), false)
+
                 val editor = preferences.edit()
                 editor.putString(RECORDER_STATE, "recording")
                 editor.apply()
@@ -213,22 +233,33 @@ class BasicQuestionActivity : AppCompatActivity(), View.OnClickListener {
             }
 
         } else if (preferences.getString(RECORDER_STATE, "null").equals("recording")) {
+            recorderService.startRecording()
+            showTimeCountDown(true)
+            var time = 10
+
             job = scope.launch {
-                recorderService.startRecording()
-                delay(10000)
+
+                while(time > 0) {
+                    binding.progressBarTime.progress = time*10
+                    binding.tvProgressTime.text = time.toString()
+                    delay(1000)
+                    time -= 1
+                }
+
+                showTimeCountDown(false)
                 val editor = preferences.edit()
                 editor.putString(RECORDER_STATE, "stop")
                 editor.apply()
-
                 binding.btnActRecord.backgroundTintList = ColorStateList.valueOf(
                     resources.getColor(
                         R.color.green_200,
                         theme
                     )
                 )
-
-                showToast("Stop record!", this@BasicQuestionActivity)
+                showNotifDialog(dialog, R.drawable.countdown_end, resources.getString(R.string.time_is_up),true)
                 recorderService.stopRecording()
+                delay(5000)
+                showNotifDialog(dialog, R.drawable.countdown_end, resources.getString(R.string.time_is_up), false)
                 stopUpdates()
             }
         }
@@ -258,23 +289,24 @@ class BasicQuestionActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
+    private fun showTimeCountDown(state: Boolean) {
+        if(state) {
+            binding.progressBarTime.visibility = View.VISIBLE
+            binding.tvProgressTime.visibility = View.VISIBLE
+        } else {
+            binding.progressBarTime.visibility = View.GONE
+            binding.tvProgressTime.visibility = View.GONE
+        }
+    }
+
     private fun stopUpdates() {
         job?.cancel()
         job = null
     }
 
-    private fun showCountDown(state: Boolean) {
-        binding.imgCountdown.loadDrawable(R.drawable.countdown)
-        if (state) {
-            binding.imgCountdown.visibility = View.VISIBLE
-            binding.cvCorrection.visibility = View.GONE
-        } else {
-            binding.imgCountdown.visibility = View.GONE
-            binding.cvCorrection.visibility = View.VISIBLE
-        }
-    }
-
     public override fun onDestroy() {
+        recorderService.stopRecording()
+        stopUpdates()
         if (ttsService.isSpeak()) {
             ttsService.stop()
             ttsService.shutdown()

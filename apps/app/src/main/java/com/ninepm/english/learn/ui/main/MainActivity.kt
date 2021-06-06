@@ -5,23 +5,20 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
-import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import androidx.core.view.isVisible
-import androidx.core.view.marginTop
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.navigation.NavigationView
 import com.ninepm.english.learn.R
 import com.ninepm.english.learn.databinding.ActivityMainBinding
-import com.ninepm.english.learn.firebase.auth.FirebaseAuthConfig.Companion.auth
 import com.ninepm.english.learn.ui.home.HomeFragment
 import com.ninepm.english.learn.ui.home.HomeViewModel
 import com.ninepm.english.learn.ui.home.ViewModelFactory
-import com.ninepm.english.learn.utils.MyUtils.Companion.loadDrawable
+import com.ninepm.english.learn.utils.MyUtils.Companion.loadGIFDrawable
 import com.ninepm.english.learn.utils.MyUtils.Companion.loadImage
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -74,7 +71,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 if(response.profilePath != null) {
                     header.findViewById<ImageView>(R.id.nav_drawer_img_avatar).loadImage(response.profilePath)
                 } else {
-                    header.findViewById<ImageView>(R.id.nav_drawer_img_avatar).loadDrawable(R.drawable.user_default)
+                    header.findViewById<ImageView>(R.id.nav_drawer_img_avatar).loadGIFDrawable(R.drawable.user_default, true)
                 }
                 menu.findItem(R.id.nav_drawer_profile).isVisible = true
                 menu.findItem(R.id.nav_drawer_histories).isVisible = true
