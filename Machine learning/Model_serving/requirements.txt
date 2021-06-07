@@ -1,0 +1,3 @@
+tensorflow-io==0.17
+tensorflow==2.4.1
+numpy==1.19.5
