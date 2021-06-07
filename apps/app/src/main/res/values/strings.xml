@@ -1,11 +1,11 @@
 <resources>
-    <string name="app_name">English Learn</string>
+    <string name="app_name">READin</string>
     <string name="login">Login</string>
     <string name="start">Start</string>
     <string name="or">OR</string>
     <string name="login_to_save_your_progress">Login to save your progress</string>
     <string name="let_start">Let\'s Start</string>
-    <string name="start_learning">English Learn</string>
+    <string name="start_learning">READin</string>
     <string name="welcome">Welcome!</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
@@ -16,7 +16,7 @@
     <string name="question">Question</string>
     <string name="no_mistake_were_found">No mistake were found!</string>
     <string name="answer">Answer</string>
-    <string name="question_test">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</string>
+    <string name="question_test">The paper on which the printing is to be done is a necessary part of our subject</string>
     <string name="are_you_sure">ARE YOU SURE ?,</string>
     <string name="leave_message">want leave from this task module</string>
     <string name="cancel">Cancel</string>
@@ -24,14 +24,27 @@
     <string name="wait_verification">Wait Verification</string>
     <string name="verification_message">Please check your mail for account verification</string>
     <string name="successfully_verification">Successfully Verification</string>
+    <string name="email_error_empty_message">Please enter email</string>
+    <string name="username_error_empty_message">Please enter username</string>
+    <string name="password_error_empty_message">Please enter password</string>
+    <string name="profile">Profile</string>
+    <string name="home">Home</string>
+    <string name="histories">Histories</string>
+    <string name="nav_drawer_open">Navigation Drawer Open</string>
+    <string name="nav_drawer_close">Navigation Drawer Close</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="navigation_drawer_open">Navigation Drawer Open</string>
+    <string name="navigation_drawer_close">Navigation Drawer Close</string>
+    <string name="change_password">Change Password</string>
+    <string name="about">About</string>
     <string name="title_about">How to use</string>
     <string name="tutor1_about">1. click start to try, or click login if have account .</string>
     <string name="tutor2_about">"2. at task activity, you can see the question. "</string>
-    <string name="tutor3_about">3. if you want to start, you can click icon mic at rigth bottom for starting speach.</string>
+    <string name="tutor3_about">3. if you want to start, you can click icon mic at right bottom for starting speech.</string>
     <string name="tutor4_about">4. if you correct the question you can continue for next question.</string>
     <string name="tutor5_about">5. you can have poin and you can see the poin.</string>
     <string name="user">User123</string>
-    <string name="email">user123@gmail.com</string>
+    <string name="email">Email</string>
     <string name="txt_poin_history">Poin History</string>
     <string name="module">Basic Module</string>
     <string name="score">90%</string>
@@ -47,4 +60,6 @@
     <string name="txt_new_score">NEW SCORE</string>
     <string name="txt_value_score">80%</string>
     <string name="save">Save</string>
+    <string name="getting_ready">Getting Ready!</string>
+    <string name="time_is_up">Time is up!</string>
 </resources>
