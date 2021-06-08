@@ -1,3 +1,5 @@
 tensorflow-io==0.18.0
 tensorflow==2.5.0
 numpy==1.19.5
+requests==2.25.1
+Flask==2.0.1
