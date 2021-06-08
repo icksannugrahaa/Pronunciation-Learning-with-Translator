@@ -42,14 +42,23 @@ if __name__ == '__main__':
     audio_processing = AudioDataProcessing()
     label_processing = LabelProcessing()
 
+    audio_file = 'audio_initialize.wav'
+    text_file = 'text_initialize.txt'
     # Convert audio file to db-scale spectrogram
-    waveform = decoding.decode_audio('audio_initialize.wav')
-    spectrogram = audio_processing.get_spectrogram(waveform)
-    x = tf.expand_dims(spectrogram, axis=0)
+    if not os.path.exists(audio_file):
+        raise Exception(f'There are no {audio_file}')
+    else:
+        waveform = decoding.decode_audio(audio_file)
+        spectrogram = audio_processing.get_spectrogram(waveform)
+        x = tf.expand_dims(spectrogram, axis=0)
 
     # Encode label
-    label = label_processing.get_label('text_initialize.txt')
-    y = tf.expand_dims(label, axis=0)
+    if not os.path.exists(text_file):
+        raise Exception(f'There are no {text_file}')
+    else:
+        label = label_processing.get_label(text_file)
+        y = tf.expand_dims(label, axis=0)
+
 
     model.train_on_batch(x, y)
     model.load_weights("content/weights/my_weights")
