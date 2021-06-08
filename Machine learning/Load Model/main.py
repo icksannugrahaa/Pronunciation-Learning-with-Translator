@@ -13,8 +13,8 @@ def create_model(optimizers):
         num_head=4,
         num_feed_forward=1024,
         target_maxlen=200,
-        num_layers_enc=6,
-        num_layers_dec=6,
+        num_layers_enc=4,
+        num_layers_dec=1,
         num_classes=35,
     )
     loss_fn = tf.keras.losses.CategoricalCrossentropy(
@@ -27,7 +27,9 @@ def create_model(optimizers):
 
 if __name__ == '__main__':
     archive_path = 'weights.tar.gz'
-    if os.path.exists(archive_path):
+    if not os.path.exists(archive_path):
+        raise Exception(f'there are no {archive_path}')
+    elif not os.path.exists('content/weights/my_weights'):
         my_tar = tarfile.open(archive_path)
         my_tar.extractall('./')
         my_tar.close()
@@ -50,6 +52,6 @@ if __name__ == '__main__':
     y = tf.expand_dims(label, axis=0)
 
     model.train_on_batch(x, y)
-    model.load_weights('content/weights/my_weights')
+    model.load_weights("content/weights/my_weights")
 
     model.save('speech_to_text')
