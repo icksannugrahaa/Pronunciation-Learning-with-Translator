@@ -1,4 +1,0 @@
-tensorflow-io==0.18.0
-tensorflow==2.5.0
-librosa==0.8.0
-numpy==1.19.5
