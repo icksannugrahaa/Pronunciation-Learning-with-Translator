@@ -6,6 +6,7 @@ from stt_service import STT_Service
 
 app = Flask(__name__)
 
+
 @app.route("/predict", methods=["POST"])
 def predict():
     # Get POST request and save the file
@@ -13,16 +14,17 @@ def predict():
     file_name = str(random.randint(0, 100000))
     audio_file.save(file_name)
 
-    #instiantiat STT_Service and predict the audio file
+    # instantiate STT_Service and predict the audio file
     stt = STT_Service()
-    predicted_sentence = stt.predict(file_name)
+    predicted_sentence: str = stt.predict(file_name)
 
-    #delete audio file
+    # delete audio file
     os.remove(file_name)
 
-    #send predicted sentence in json format
+    # send predicted sentence in json format
     result = {"word": predicted_sentence}
     return jsonify(result)
+
 
 if __name__ == "__main__":
     app.run(debug=False)

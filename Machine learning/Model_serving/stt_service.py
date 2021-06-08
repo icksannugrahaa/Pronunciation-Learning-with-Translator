@@ -5,6 +5,7 @@ from audio_processing import AudioDataProcessing
 
 MODEL_PATH = 'speech_to_text'
 
+
 class _STT_Service:
     model = None
     _instance = None
@@ -50,11 +51,9 @@ class _STT_Service:
 
         return predict.strip()
 
+
 def STT_Service():
     if _STT_Service._instance is None:
         _STT_Service._instance = _STT_Service()
         _STT_Service.model = tf.keras.models.load_model(MODEL_PATH)
     return _STT_Service._instance
-
-
-
