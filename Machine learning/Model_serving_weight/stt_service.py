@@ -3,11 +3,13 @@ import os
 import tensorflow as tf
 import tensorflow_io as tfio
 
-from audio_label_decoding import Decode
-from audio_processing import AudioDataProcessing
+from tensorflow import keras
 from model import Transformer
+from audio_label_processing import AudioDataProcessing, LabelProcessing
+from encoding_decoding import EncodingDecoding
 
-MODEL_PATH = 'speech_to_text'
+
+WEIGHT_PATH = 'weights/my_weights'
 
 
 class _STT_Service:
@@ -16,7 +18,7 @@ class _STT_Service:
 
     def preprocess(self, file_path):
         # Convert audio_file to waveform
-        waveform = Decode().decode_audio(file_path)
+        waveform = EncodingDecoding().decode_audio(file_path)
 
         # Extract db-scale spectrogram
         spectrogram = AudioDataProcessing().get_spectrogram(waveform)
@@ -35,7 +37,7 @@ class _STT_Service:
                 break
 
         #  Decode prediction result from numeric to alphabetic
-        label = Decode().decode_label(tf.cast(dec_input, dtype=tf.int64))
+        label = EncodingDecoding().decode_label(tf.cast(dec_input, dtype=tf.int64))
 
         label = b''.join(label.numpy()).decode('utf-8')
         return label
@@ -55,6 +57,7 @@ class _STT_Service:
 
         return predict.strip()
 
+
 def create_model(optimizers):
     model = Transformer(
         num_hid=256,
@@ -72,6 +75,7 @@ def create_model(optimizers):
 
     return model
 
+
 def STT_Service():
     if _STT_Service._instance is None:
         optimizer = keras.optimizers.Adam(beta_1=0.9, beta_2=0.98,
@@ -86,12 +90,12 @@ def STT_Service():
         text_path = 'text_initialize.txt'
 
         if not os.path.exists(audio_path):
-            raise Exception("There are no {} file".format((audio_path)))
+            raise Exception("There are no {} file".format(audio_path))
         else:
             # Convert audio file to waveform
             waveform = decoding.decode_audio(audio_path)
 
-            #Trim noise in the audio waveform
+            # Trim noise in the audio waveform
             position = tfio.audio.trim(waveform, axis=0, epsilon=0.1)
             start = position[0]
             stop = position[1]
@@ -102,7 +106,7 @@ def STT_Service():
             x = tf.expand_dims(spectrogram, axis=0)
 
         if not os.path.exists(text_path):
-            raise Exception("There are no {} file".format((text_path)))
+            raise Exception("There are no {} file".format(text_path))
         else:
             # Encode label
             label = label_processing.get_label(text_path)
