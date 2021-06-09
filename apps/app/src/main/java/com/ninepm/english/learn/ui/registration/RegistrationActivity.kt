@@ -4,15 +4,12 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
-import android.util.Log
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import com.ninepm.english.learn.R
-import com.ninepm.english.learn.data.source.local.entity.User
+import com.ninepm.english.learn.data.source.local.entity.UserEntity
 import com.ninepm.english.learn.databinding.ActivityRegistrationBinding
 import com.ninepm.english.learn.databinding.RegistrationContentDetailBinding
-import com.ninepm.english.learn.firebase.auth.FirebaseAuthConfig
-import com.ninepm.english.learn.firebase.auth.FirebaseAuthConfig.Companion.auth
 import com.ninepm.english.learn.ui.home.ViewModelFactory
 import com.ninepm.english.learn.ui.verification.VerificationWaitActivity
 import com.ninepm.english.learn.utils.MyUtils.Companion.showToast
@@ -52,7 +49,7 @@ class RegistrationActivity : AppCompatActivity(), View.OnClickListener {
             }
 
             viewModel.userRegister(
-                User(
+                UserEntity(
                     email = regIdtEmail.text.toString(),
                     password = regIdtPassword.text.toString(),
                     username = regIdtUsername.text.toString()

@@ -5,16 +5,11 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
 import androidx.lifecycle.ViewModelProvider
-import com.google.firebase.auth.FirebaseAuth
 import com.ninepm.english.learn.R
-import com.ninepm.english.learn.data.source.local.entity.User
+import com.ninepm.english.learn.data.source.local.entity.UserEntity
 import com.ninepm.english.learn.databinding.ActivityLoginBinding
 import com.ninepm.english.learn.databinding.LoginContentDetailBinding
-import com.ninepm.english.learn.firebase.auth.FirebaseAuthConfig
-import com.ninepm.english.learn.firebase.auth.FirebaseAuthConfig.Companion.auth
-import com.ninepm.english.learn.ui.home.HomeViewModel
 import com.ninepm.english.learn.ui.home.ViewModelFactory
-import com.ninepm.english.learn.ui.main.MainActivity
 import com.ninepm.english.learn.ui.registration.RegistrationActivity
 import com.ninepm.english.learn.ui.verification.VerificationWaitActivity
 import com.ninepm.english.learn.utils.MyUtils.Companion.showToast
@@ -57,7 +52,7 @@ class LoginActivity : AppCompatActivity() {
             }
 
             viewModel.userLogin(
-                User(
+                UserEntity(
                     email = idtEmail.text.toString(),
                     password = idtPassword.text.toString()
                 )

@@ -27,14 +27,14 @@ class RecorderService {
 
     private var output: String? = null
 
-    fun WavRecorder(path: String?) {
+    fun WavRecorder(path: String?, filename: String?) {
         bufferSize = AudioRecord.getMinBufferSize(
             RECORDER_SAMPLERATE,
             RECORDER_CHANNELS, RECORDER_AUDIO_ENCODING
         ) * 3
         audioData = ShortArray(bufferSize) // short array that pcm data is put
         // into.
-        output = path
+        output = StringBuilder().append("$path/$filename").toString()
     }
 
     private fun getFilename(): String? {

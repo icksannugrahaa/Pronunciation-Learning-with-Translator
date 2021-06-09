@@ -1,6 +1,6 @@
 package com.ninepm.english.learn.data.source.local.entity
 
-data class User(
+data class UserEntity(
     val uid: String? = "user_id",
     val username: String? = "username",
     val email: String? = "email",

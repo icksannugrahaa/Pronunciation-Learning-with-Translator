@@ -1,19 +1,29 @@
 package com.ninepm.english.learn.firebase
 
+import android.annotation.SuppressLint
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.database.*
-import com.ninepm.english.learn.data.source.local.entity.User
+import com.google.firebase.storage.StorageReference
+import com.ninepm.english.learn.data.source.local.entity.UserEntity
 import com.ninepm.english.learn.firebase.auth.FirebaseAuthConfig
 import com.ninepm.english.learn.firebase.auth.FirebaseAuthConfig.Companion.auth
+import com.ninepm.english.learn.firebase.storage.FirebaseStorageConfig
 import com.ninepm.english.learn.utils.AppExecutors
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import java.nio.file.Files
+import java.nio.file.Paths
 
 class FirebaseAuthImpl private constructor(
     private val appExecutors: AppExecutors
 ) : FirebaseAuthRepo {
-    var database: FirebaseDatabase? = null
-    var databaseReference: DatabaseReference? = null
+    private var database: FirebaseDatabase? = null
+    private var databaseReference: DatabaseReference? = null
+    private var uploadReference: StorageReference? = null
 
     companion object {
         @Volatile
@@ -24,8 +34,8 @@ class FirebaseAuthImpl private constructor(
             }
     }
 
-    override fun firebaseGetUser(): LiveData<User> {
-        val user = MutableLiveData<User>()
+    override fun firebaseGetUser(): LiveData<UserEntity> {
+        val user = MutableLiveData<UserEntity>()
         database = FirebaseAuthConfig.getFirebaseDBInstance()
         databaseReference = database?.reference?.child("profile")
 
@@ -38,7 +48,7 @@ class FirebaseAuthImpl private constructor(
                 userReference?.addValueEventListener(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
                         user.postValue(
-                            User(
+                            UserEntity(
                                 uid = currentUser.uid,
                                 username = snapshot.child("username").value.toString(),
                                 email = currentUser.email,
@@ -56,7 +66,7 @@ class FirebaseAuthImpl private constructor(
                 FirebaseAuthConfig.signOut()
             }
         } else {
-            user.postValue(User())
+            user.postValue(UserEntity())
         }
 
         Log.d("firebase_currentUser", auth.currentUser?.uid.toString())
@@ -64,7 +74,7 @@ class FirebaseAuthImpl private constructor(
         return user
     }
 
-    override fun firebaseRegister(user: User): LiveData<Boolean> {
+    override fun firebaseRegister(user: UserEntity): LiveData<Boolean> {
         val status = MutableLiveData<Boolean>()
 
         database = FirebaseAuthConfig.getFirebaseDBInstance()
@@ -92,7 +102,7 @@ class FirebaseAuthImpl private constructor(
         return status
     }
 
-    override fun firebaseLogin(user: User): LiveData<String> {
+    override fun firebaseLogin(user: UserEntity): LiveData<String> {
         val status = MutableLiveData<String>()
 
         database = FirebaseAuthConfig.getFirebaseDBInstance()
@@ -121,7 +131,7 @@ class FirebaseAuthImpl private constructor(
         return status
     }
 
-    override fun firebaseCheckVerification(user: User): LiveData<Boolean> {
+    override fun firebaseCheckVerification(user: UserEntity): LiveData<Boolean> {
         val status = MutableLiveData<Boolean>()
 
         database = FirebaseAuthConfig.getFirebaseDBInstance()
@@ -142,5 +152,30 @@ class FirebaseAuthImpl private constructor(
         }
         return status
     }
+
+//    @SuppressLint("NewApi")
+//    override fun uploadFile(path: String, context: Context): LiveData<String> {
+//        val result = MutableLiveData<String>()
+//
+//        val file = Paths.get(path)
+//        val bucketName = "learn-9pm"
+//        val blobName = file.fileName.toString()
+//
+//        CoroutineScope(Dispatchers.IO).launch {
+//            val storage = FirebaseStorageConfig.setStorage(context)
+//            val bucket = storage.get(bucketName)
+//                ?: error("Bucket $bucketName does not exist. You can create a new bucket with the command 'create <bucket>'.")
+//
+//            bucket.create(blobName, Files.readAllBytes(file))
+//
+//            if(bucket.exists()) {
+//                result.postValue("success upload")
+//            } else {
+//                result.postValue("failed bucket not found")
+//            }
+//        }
+//
+//        return result
+//    }
 
 }
