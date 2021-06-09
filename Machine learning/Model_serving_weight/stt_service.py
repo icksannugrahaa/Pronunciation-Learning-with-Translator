@@ -8,6 +8,7 @@ from model import Transformer
 from audio_label_processing import AudioDataProcessing, LabelProcessing
 from encoding_decoding import EncodingDecoding
 
+
 WEIGHT_PATH = 'weights/my_weights'
 
 

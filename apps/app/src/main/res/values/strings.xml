@@ -12,7 +12,7 @@
     <string name="register">Register</string>
     <string name="signin">Sign In</string>
     <string name="enter_message">Enter Message</string>
-    <string name="progress">100%</string>
+    <string name="progress">0%</string>
     <string name="question">Question</string>
     <string name="no_mistake_were_found">No mistake were found!</string>
     <string name="answer">Answer</string>
@@ -62,4 +62,5 @@
     <string name="save">Save</string>
     <string name="getting_ready">Getting Ready!</string>
     <string name="time_is_up">Time is up!</string>
+    <string name="review">Review Proccess</string>
 </resources>

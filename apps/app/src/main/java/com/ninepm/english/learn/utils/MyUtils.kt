@@ -56,6 +56,11 @@ class MyUtils {
                 })
                 .into(this)
         }
+        fun ImageView.loadDrawable(id: Int) {
+            Glide.with(this.context)
+                .load(id)
+                .into(this)
+        }
         fun getRandomString(length: Int) : String {
             val charset = "ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz0123456789"
             return (1..length)

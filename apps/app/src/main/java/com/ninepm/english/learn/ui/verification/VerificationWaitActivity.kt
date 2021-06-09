@@ -7,7 +7,7 @@ import android.os.Handler
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.ninepm.english.learn.R
-import com.ninepm.english.learn.data.source.local.entity.User
+import com.ninepm.english.learn.data.source.local.entity.UserEntity
 import com.ninepm.english.learn.databinding.ActivityVerificationWaitBinding
 import com.ninepm.english.learn.ui.home.ViewModelFactory
 import com.ninepm.english.learn.utils.MyUtils.Companion.loadGIFDrawable
@@ -57,7 +57,7 @@ class VerificationWaitActivity : AppCompatActivity() {
             val email = intent.getStringExtra(USER_EMAIL)!!
             val pass = intent.getStringExtra(USER_PASS)!!
             while(!status) {
-                viewModel.getStatus(User(email = email, password = pass)).observe(
+                viewModel.getStatus(UserEntity(email = email, password = pass)).observe(
                     this@VerificationWaitActivity,
                     {
                         status = it

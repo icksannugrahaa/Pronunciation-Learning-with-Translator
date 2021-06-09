@@ -4,6 +4,7 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.ColorStateList
 import android.media.MediaPlayer
@@ -13,17 +14,23 @@ import android.os.Bundle
 import android.os.Environment
 import android.util.Log
 import android.view.View
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import androidx.lifecycle.ViewModelProvider
 import com.ninepm.english.learn.R
+import com.ninepm.english.learn.data.source.local.entity.PredictEntity
 import com.ninepm.english.learn.databinding.ActivityQuestionBasicBinding
 import com.ninepm.english.learn.databinding.CountdownDialogBinding
 import com.ninepm.english.learn.databinding.QuestionBasicContentDetailBinding
-import com.ninepm.english.learn.utils.MyUtils.Companion.loadGIFDrawable
+import com.ninepm.english.learn.ui.about.AboutActivity
+import com.ninepm.english.learn.ui.question.ViewModelFactory
+import com.ninepm.english.learn.ui.score.ScoreActivity
+import com.ninepm.english.learn.utils.DialogUtils.showAlertExitDialog
+import com.ninepm.english.learn.utils.DialogUtils.showNotificationDialog
+import com.ninepm.english.learn.utils.MyUtils.Companion.getRandomString
+import com.ninepm.english.learn.utils.MyUtils.Companion.loadDrawable
+import com.ninepm.english.learn.utils.MyUtils.Companion.loadImage
 import com.ninepm.english.learn.utils.MyUtils.Companion.showToast
 import com.ninepm.english.learn.utils.RecorderService
 import com.ninepm.english.learn.utils.TextToSpeechServices
@@ -34,37 +41,45 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import me.xdrop.fuzzywuzzy.FuzzySearch
 import java.io.File
+import java.lang.StringBuilder
 
 
 @SuppressLint("UseCompatLoadingForDrawables")
 @RequiresApi(Build.VERSION_CODES.M)
 class BasicQuestionActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var binding: QuestionBasicContentDetailBinding
+    private lateinit var mainBinding: ActivityQuestionBasicBinding
     private lateinit var bindingCountDownLayout: CountdownDialogBinding
     private lateinit var mediaRecorder: MediaRecorder
     private lateinit var mediaPlayer: MediaPlayer
     private lateinit var ttsService: TextToSpeechServices
     private lateinit var recorderService: RecorderService
     private lateinit var timerService: TimerService
+    private lateinit var viewModel: QuestionViewModel
 
-    var path = Environment.getExternalStorageDirectory().toString() + "/record.wav"
+    var path = StringBuilder().append("${Environment.getExternalStorageDirectory()}").toString()
+    var filename: String = ""
     private val scope = MainScope()
     var job: Job? = null
+    var statusQuestion: Boolean = false
 
     companion object {
         const val PREFS_NAME = "MEDIA_RECORDER_STATE"
         private const val RECORDER_STATE = "state"
         private const val PLAYER_STATE = "state"
+        private const val AUDIO_ID = "id"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val basicQuestionActivity = ActivityQuestionBasicBinding.inflate(layoutInflater)
-        basicQuestionActivity.btnBack.setOnClickListener(this)
-        binding = basicQuestionActivity.questionBasicContentDetail
-        setSupportActionBar(basicQuestionActivity.questionBasicToolbar)
-        setContentView(basicQuestionActivity.root)
+        mainBinding = ActivityQuestionBasicBinding.inflate(layoutInflater)
+        mainBinding.btnBack.setOnClickListener(this)
+        mainBinding.imgStatus.setOnClickListener(this)
+        binding = mainBinding.questionBasicContentDetail
+        setSupportActionBar(mainBinding.questionBasicToolbar)
+        setContentView(mainBinding.root)
         bindingCountDownLayout = CountdownDialogBinding.inflate(layoutInflater, binding.root, false)
+
         if (ActivityCompat.checkSelfPermission(
                 this,
                 Manifest.permission.RECORD_AUDIO
@@ -80,40 +95,46 @@ class BasicQuestionActivity : AppCompatActivity(), View.OnClickListener {
         mediaRecorder = MediaRecorder()
         mediaPlayer = MediaPlayer()
         recorderService = RecorderService()
-        recorderService.WavRecorder(path)
         timerService = TimerService()
+        ttsService = TextToSpeechServices()
+        ttsService.setContext(this)
+        val preferences = this.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        val editor = preferences.edit()
+        val factory = ViewModelFactory.getInstance()
+        viewModel = ViewModelProvider(this, factory)[QuestionViewModel::class.java]
 
         binding.btnActRecord.setOnClickListener(this)
         binding.imgAnswerPlay.setOnClickListener(this)
 
-        ttsService = TextToSpeechServices()
-        ttsService.setContext(this)
+        if (preferences.getString(AUDIO_ID, null).equals(null)) {
+            filename = StringBuilder().append("${getRandomString(20)}.wav").toString()
+            editor.putString(AUDIO_ID, filename)
+        } else {
+            filename = preferences.getString(AUDIO_ID, null)!!
+        }
 
-        val preferences = this.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-        val editor = preferences.edit()
+        recorderService.WavRecorder(path, filename)
+
         editor.putString(PLAYER_STATE, "stop")
         editor.putString(RECORDER_STATE, "stop")
         editor.apply()
-
-//        Log.d(
-//            "search_fuzzy", (
-//                    FuzzySearch.ratio(
-//                        "The paper on which the printing is to be done is a necessary part of our subject",
-//                        "the paper on which the printing is to be done is a necessary part of ou ou subject"
-//                    )
-//                    ).toString()
-//        )
     }
 
     override fun onClick(v: View?) {
         val preferences = this.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-        when (v?.id) {
-            R.id.btn_back -> {
-                showAlertExitDialog()
-            }
-            R.id.img_answer_play -> {
-                val file = File(path)
-                if (file.exists()) {
+        with(binding) {
+            when (v?.id) {
+                R.id.btn_back -> {
+                    showAlertExitDialog(this@BasicQuestionActivity, this@BasicQuestionActivity)
+                }
+                R.id.img_status -> {
+                    if (statusQuestion) {
+                        startScoreActivity()
+                    } else {
+                        startAboutActivity()
+                    }
+                }
+                R.id.img_answer_play -> {
                     when (preferences.getString(PLAYER_STATE, "null")) {
                         "play" -> {
                             val editor = preferences.edit()
@@ -127,8 +148,8 @@ class BasicQuestionActivity : AppCompatActivity(), View.OnClickListener {
                             editor.putString(PLAYER_STATE, "play")
                             editor.apply()
 
-                            ttsService.speakText(binding.tvLessonText.text.toString())
-                            binding.imgAnswerPlay.setImageDrawable(
+                            ttsService.speakText(tvLessonText.text.toString())
+                            imgAnswerPlay.setImageDrawable(
                                 resources.getDrawable(
                                     R.drawable.ic_stop_blue,
                                     theme
@@ -138,35 +159,66 @@ class BasicQuestionActivity : AppCompatActivity(), View.OnClickListener {
                         }
                     }
                 }
-            }
-            R.id.btn_act_record -> {
-                if (preferences.getString(RECORDER_STATE, "null").equals("stop")) {
-                    val editor = preferences.edit()
-                    editor.putString(RECORDER_STATE, "waiting")
-                    editor.apply()
+                R.id.btn_act_record -> {
+                    if (preferences.getString(RECORDER_STATE, "null").equals("stop")) {
+                        val editor = preferences.edit()
+                        editor.putString(RECORDER_STATE, "waiting")
+                        editor.apply()
 
-                    binding.btnActRecord.backgroundTintList = ColorStateList.valueOf(
-                        resources.getColor(
-                            R.color.red_200,
-                            theme
+                        btnActRecord.backgroundTintList = ColorStateList.valueOf(
+                            resources.getColor(
+                                R.color.red_200,
+                                theme
+                            )
                         )
-                    )
-                    startUpdateRecording()
+                        startUpdateRecording()
 
-                } else {
-                    val editor = preferences.edit()
-                    editor.putString(RECORDER_STATE, "stop")
-                    editor.apply()
+                    } else {
+                        val dialog = Dialog(this@BasicQuestionActivity)
+                        val editor = preferences.edit()
+                        editor.putString(RECORDER_STATE, "stop")
+                        editor.apply()
 
-                    binding.btnActRecord.backgroundTintList = ColorStateList.valueOf(
-                        resources.getColor(
-                            R.color.green_200,
-                            theme
+                        btnActRecord.backgroundTintList = ColorStateList.valueOf(
+                            resources.getColor(
+                                R.color.green_200,
+                                theme
+                            )
                         )
-                    )
-                    recorderService.stopRecording()
-                    showTimeCountDown(false)
-                    stopUpdates()
+                        recorderService.stopRecording()
+                        showNotificationDialog(
+                            dialog,
+                            R.drawable.anim_wait_hour,
+                            resources.getString(R.string.review),
+                            true,
+                            this@BasicQuestionActivity
+                        )
+                        viewModel.predictAudio(
+                            "$path/$filename",
+                            this@BasicQuestionActivity
+                        ).observe(this@BasicQuestionActivity, { word ->
+                            val ratio = FuzzySearch.ratio(
+                                tvLessonText.text.toString(),
+                                word
+                            ).toString()
+
+                            tvProgressBar.text = StringBuilder().append("$ratio%")
+                            progressBarHorizontal.progress = ratio.toInt()
+                            tvLessonCorrection.text = word
+
+                            showNotificationDialog(
+                                dialog,
+                                R.drawable.anim_wait_hour,
+                                resources.getString(R.string.review),
+                                false,
+                                this@BasicQuestionActivity
+                            )
+                            mainBinding.imgStatus.loadDrawable(R.drawable.ic_play_blue)
+                            statusQuestion = true
+                        })
+                        showTimeCountDown(false)
+                        stopUpdates()
+                    }
                 }
             }
         }
@@ -182,37 +234,29 @@ class BasicQuestionActivity : AppCompatActivity(), View.OnClickListener {
             showToast("Permission granted!", this)
     }
 
-    private fun showAlertExitDialog() {
-        MaterialAlertDialogBuilder(this)
-            .setCancelable(false)
-            .setTitle(resources.getString(R.string.are_you_sure))
-            .setMessage(resources.getString(R.string.leave_message))
-            .setNegativeButton(resources.getString(R.string.cancel)) { dialog, _ ->
-                dialog.dismiss()
-            }
-            .setPositiveButton(resources.getString(R.string.yes)) { dialog, _ ->
-                dialog.dismiss()
-                finish()
-            }
-            .show()
-    }
-
-    private fun showNotifDialog(dialog: Dialog, source: Int, title: String, state: Boolean) {
-        if(!state) {
-            dialog.dismiss()
-        } else {
-            dialog.setContentView(R.layout.countdown_dialog)
-            dialog.findViewById<ImageView>(R.id.img_countdown).loadGIFDrawable(source, false)
-            dialog.findViewById<TextView>(R.id.tv_dialog_title).text = title
-            dialog.window?.setBackgroundDrawable(resources.getDrawable(R.color.transparent, theme))
-            dialog.create()
-            dialog.show()
-        }
-        Log.d("STATUS_DIALOG", dialog.isShowing.toString())
-    }
-
     override fun onBackPressed() {
-        showAlertExitDialog()
+        showAlertExitDialog(this, this)
+    }
+
+    private fun startScoreActivity() {
+        Intent(this, ScoreActivity::class.java).apply {
+            putExtra(
+                ScoreActivity.PREDICT_DATA,
+                PredictEntity(
+                    id = getRandomString(10),
+                    binding.tvLessonCorrection.text.toString(),
+                    binding.progressBarHorizontal.progress
+                )
+            )
+            startActivity(this)
+        }
+        finish()
+    }
+
+    private fun startAboutActivity() {
+        Intent(this, AboutActivity::class.java).apply {
+            startActivity(this)
+        }
     }
 
     private fun startUpdateRecording() {
@@ -222,9 +266,21 @@ class BasicQuestionActivity : AppCompatActivity(), View.OnClickListener {
         Log.d("STATUS_RECORD", preferences.getString(RECORDER_STATE, "null").toString())
         if (preferences.getString(RECORDER_STATE, "null").equals("waiting")) {
             job = scope.launch {
-                showNotifDialog(dialog, R.drawable.countdown, resources.getString(R.string.getting_ready), true)
+                showNotificationDialog(
+                    dialog,
+                    R.drawable.countdown,
+                    resources.getString(R.string.getting_ready),
+                    true,
+                    this@BasicQuestionActivity
+                )
                 delay(5000)
-                showNotifDialog(dialog, R.drawable.countdown, resources.getString(R.string.getting_ready), false)
+                showNotificationDialog(
+                    dialog,
+                    R.drawable.countdown,
+                    resources.getString(R.string.getting_ready),
+                    false,
+                    this@BasicQuestionActivity
+                )
 
                 val editor = preferences.edit()
                 editor.putString(RECORDER_STATE, "recording")
@@ -239,8 +295,8 @@ class BasicQuestionActivity : AppCompatActivity(), View.OnClickListener {
 
             job = scope.launch {
 
-                while(time > 0) {
-                    binding.progressBarTime.progress = time*10
+                while (time > 0) {
+                    binding.progressBarTime.progress = time * 10
                     binding.tvProgressTime.text = time.toString()
                     delay(1000)
                     time -= 1
@@ -256,10 +312,53 @@ class BasicQuestionActivity : AppCompatActivity(), View.OnClickListener {
                         theme
                     )
                 )
-                showNotifDialog(dialog, R.drawable.countdown_end, resources.getString(R.string.time_is_up),true)
+                showNotificationDialog(
+                    dialog,
+                    R.drawable.countdown_end,
+                    resources.getString(R.string.time_is_up),
+                    true,
+                    this@BasicQuestionActivity
+                )
                 recorderService.stopRecording()
                 delay(5000)
-                showNotifDialog(dialog, R.drawable.countdown_end, resources.getString(R.string.time_is_up), false)
+                showNotificationDialog(
+                    dialog,
+                    R.drawable.countdown_end,
+                    resources.getString(R.string.time_is_up),
+                    true,
+                    this@BasicQuestionActivity
+                )
+
+                showNotificationDialog(
+                    dialog,
+                    R.drawable.anim_wait_hour,
+                    resources.getString(R.string.review),
+                    true,
+                    this@BasicQuestionActivity
+                )
+                viewModel.predictAudio(
+                    "$path/$filename",
+                    this@BasicQuestionActivity
+                ).observe(this@BasicQuestionActivity, { word ->
+                    val ratio = FuzzySearch.ratio(
+                        binding.tvLessonText.text.toString(),
+                        word
+                    ).toString()
+
+                    binding.tvProgressBar.text = StringBuilder().append("$ratio%")
+                    binding.progressBarHorizontal.progress = ratio.toInt()
+                    binding.tvLessonCorrection.text = word
+
+                    showNotificationDialog(
+                        dialog,
+                        R.drawable.anim_wait_hour,
+                        resources.getString(R.string.review),
+                        false,
+                        this@BasicQuestionActivity
+                    )
+                    mainBinding.imgStatus.loadDrawable(R.drawable.ic_play_blue)
+                    statusQuestion = true
+                })
                 stopUpdates()
             }
         }
@@ -290,7 +389,7 @@ class BasicQuestionActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun showTimeCountDown(state: Boolean) {
-        if(state) {
+        if (state) {
             binding.progressBarTime.visibility = View.VISIBLE
             binding.tvProgressTime.visibility = View.VISIBLE
         } else {

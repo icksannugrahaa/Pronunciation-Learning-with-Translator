@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.ninepm.english.learn.di.Injection
 import com.ninepm.english.learn.firebase.FirebaseAuthImpl
 import com.ninepm.english.learn.ui.login.LoginViewModel
+import com.ninepm.english.learn.ui.question.QuestionViewModel
 import com.ninepm.english.learn.ui.registration.RegisterViewModel
 import com.ninepm.english.learn.ui.verification.VerificationViewModel
 

@@ -1,7 +1,10 @@
 package com.ninepm.english.learn.di
 
 import android.content.Context
+import com.ninepm.english.learn.data.source.RemoteRepositoryImpl
+import com.ninepm.english.learn.data.source.remote.RemoteDataSource
 import com.ninepm.english.learn.firebase.FirebaseAuthImpl
+import com.ninepm.english.learn.utils.ApiHelpers
 import com.ninepm.english.learn.utils.AppExecutors
 
 object Injection {
@@ -9,6 +12,13 @@ object Injection {
         val appExecutors = AppExecutors()
 
         return FirebaseAuthImpl.getInstance(appExecutors)
+    }
+
+    fun providePredict(): RemoteRepositoryImpl {
+        val appExecutors = AppExecutors()
+        val remoteDataSource = RemoteDataSource.getInstance(ApiHelpers())
+
+        return RemoteRepositoryImpl.getInstance(remoteDataSource,appExecutors)
     }
 
 //    fun provideTvRepository(context: Context): TvRepositoryImpl {

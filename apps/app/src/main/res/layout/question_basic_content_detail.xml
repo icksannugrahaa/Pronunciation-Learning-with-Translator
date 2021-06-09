@@ -136,16 +136,6 @@
             android:layout_height="wrap_content"
             android:padding="16dp">
 
-            <ImageView
-                android:id="@+id/img_answer_status"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_assignment_green"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
             <TextView
                 android:id="@+id/tv_lesson_correction"
                 android:layout_width="wrap_content"
@@ -154,9 +144,12 @@
                 android:text="@string/no_mistake_were_found"
                 android:textColor="@color/green_200"
                 android:textSize="16sp"
-                app:layout_constraintEnd_toEndOf="@+id/img_answer_status"
-                app:layout_constraintStart_toStartOf="@+id/img_answer_status"
-                app:layout_constraintTop_toBottomOf="@+id/img_answer_status" />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
@@ -177,7 +170,7 @@
             android:layout_height="wrap_content"
             android:layout_toStartOf="@+id/btn_act_record"
             android:padding="16dp"
-            android:progress="100"
+            android:progress="0"
             android:progressDrawable="@drawable/progress_bar_custom" />
 
         <TextView
