@@ -15,6 +15,7 @@ import com.ninepm.english.learn.firebase.auth.FirebaseAuthConfig
 import com.ninepm.english.learn.firebase.auth.FirebaseAuthConfig.Companion.auth
 import com.ninepm.english.learn.ui.login.LoginActivity
 import com.ninepm.english.learn.ui.question.BasicQuestionActivity
+import com.ninepm.english.learn.ui.question.QuestionsActivity
 import com.ninepm.english.learn.utils.AnimationUtils.Companion.setAnimFlyUp
 import kotlinx.coroutines.*
 
@@ -40,7 +41,7 @@ class HomeFragment : Fragment() {
             viewModel = ViewModelProvider(this, factory)[HomeViewModel::class.java]
 
             binding.btnTry.setOnClickListener {
-                Intent(requireContext(), BasicQuestionActivity::class.java).apply {
+                Intent(requireContext(), QuestionsActivity::class.java).apply {
                     startActivity(this)
                 }
             }

@@ -4,6 +4,7 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.ColorStateList
 import android.media.MediaPlayer
@@ -18,13 +19,18 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.ViewModelProvider
 import com.ninepm.english.learn.R
+import com.ninepm.english.learn.data.source.local.entity.PredictEntity
 import com.ninepm.english.learn.databinding.ActivityQuestionBasicBinding
 import com.ninepm.english.learn.databinding.CountdownDialogBinding
 import com.ninepm.english.learn.databinding.QuestionBasicContentDetailBinding
+import com.ninepm.english.learn.ui.about.AboutActivity
 import com.ninepm.english.learn.ui.question.ViewModelFactory
+import com.ninepm.english.learn.ui.score.ScoreActivity
 import com.ninepm.english.learn.utils.DialogUtils.showAlertExitDialog
 import com.ninepm.english.learn.utils.DialogUtils.showNotificationDialog
 import com.ninepm.english.learn.utils.MyUtils.Companion.getRandomString
+import com.ninepm.english.learn.utils.MyUtils.Companion.loadDrawable
+import com.ninepm.english.learn.utils.MyUtils.Companion.loadImage
 import com.ninepm.english.learn.utils.MyUtils.Companion.showToast
 import com.ninepm.english.learn.utils.RecorderService
 import com.ninepm.english.learn.utils.TextToSpeechServices
@@ -42,6 +48,7 @@ import java.lang.StringBuilder
 @RequiresApi(Build.VERSION_CODES.M)
 class BasicQuestionActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var binding: QuestionBasicContentDetailBinding
+    private lateinit var mainBinding: ActivityQuestionBasicBinding
     private lateinit var bindingCountDownLayout: CountdownDialogBinding
     private lateinit var mediaRecorder: MediaRecorder
     private lateinit var mediaPlayer: MediaPlayer
@@ -54,6 +61,7 @@ class BasicQuestionActivity : AppCompatActivity(), View.OnClickListener {
     var filename: String? = null
     private val scope = MainScope()
     var job: Job? = null
+    var statusQuestion: Boolean = false
 
     companion object {
         const val PREFS_NAME = "MEDIA_RECORDER_STATE"
@@ -64,11 +72,12 @@ class BasicQuestionActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val basicQuestionActivity = ActivityQuestionBasicBinding.inflate(layoutInflater)
-        basicQuestionActivity.btnBack.setOnClickListener(this)
-        binding = basicQuestionActivity.questionBasicContentDetail
-        setSupportActionBar(basicQuestionActivity.questionBasicToolbar)
-        setContentView(basicQuestionActivity.root)
+        mainBinding = ActivityQuestionBasicBinding.inflate(layoutInflater)
+        mainBinding.btnBack.setOnClickListener(this)
+        mainBinding.imgStatus.setOnClickListener(this)
+        binding = mainBinding.questionBasicContentDetail
+        setSupportActionBar(mainBinding.questionBasicToolbar)
+        setContentView(mainBinding.root)
         bindingCountDownLayout = CountdownDialogBinding.inflate(layoutInflater, binding.root, false)
 
         if (ActivityCompat.checkSelfPermission(
@@ -117,6 +126,13 @@ class BasicQuestionActivity : AppCompatActivity(), View.OnClickListener {
             when (v?.id) {
                 R.id.btn_back -> {
                     showAlertExitDialog(this@BasicQuestionActivity, this@BasicQuestionActivity)
+                }
+                R.id.img_status -> {
+                    if(statusQuestion) {
+                        startScoreActivity()
+                    } else {
+                        startAboutActivity()
+                    }
                 }
                 R.id.img_answer_play -> {
                     val file = File(path)
@@ -200,6 +216,8 @@ class BasicQuestionActivity : AppCompatActivity(), View.OnClickListener {
                                 false,
                                 this@BasicQuestionActivity
                             )
+                            mainBinding.imgStatus.loadDrawable(R.drawable.ic_play_blue)
+                            statusQuestion = true
                         })
                         showTimeCountDown(false)
                         stopUpdates()
@@ -221,6 +239,20 @@ class BasicQuestionActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onBackPressed() {
         showAlertExitDialog(this, this)
+    }
+
+    private fun startScoreActivity() {
+        Intent(this, ScoreActivity::class.java).apply {
+            putExtra(ScoreActivity.PREDICT_DATA, PredictEntity(id = getRandomString(10),binding.tvLessonCorrection.text.toString(),binding.progressBarHorizontal.progress))
+            startActivity(this)
+        }
+        finish()
+    }
+
+    private fun startAboutActivity() {
+        Intent(this, AboutActivity::class.java).apply {
+            startActivity(this)
+        }
     }
 
     private fun startUpdateRecording() {
@@ -320,6 +352,8 @@ class BasicQuestionActivity : AppCompatActivity(), View.OnClickListener {
                         false,
                         this@BasicQuestionActivity
                     )
+                    mainBinding.imgStatus.loadDrawable(R.drawable.ic_play_blue)
+                    statusQuestion = true
                 })
                 stopUpdates()
             }

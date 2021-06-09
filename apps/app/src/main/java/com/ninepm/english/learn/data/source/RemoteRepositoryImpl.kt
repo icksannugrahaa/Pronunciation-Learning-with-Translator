@@ -27,7 +27,7 @@ class RemoteRepositoryImpl private constructor(
     override fun predictAudio(path: String, context: Context) : LiveData<String> {
         val result = MutableLiveData<String>()
         CoroutineScope(Dispatchers.IO).launch {
-            val data = remoteDataSource.predictAudio(path)
+            val data = remoteDataSource.predictAudio(context, path)
             Log.d("RESULT_PREDICT", data.value.toString())
             result.postValue(data.value?.word)
         }
