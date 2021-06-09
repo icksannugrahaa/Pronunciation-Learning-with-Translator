@@ -3,12 +3,10 @@ import os
 import tensorflow as tf
 import tensorflow_io as tfio
 
-from tensorflow import keras
-from model import Transformer
-from audio_label_processing import AudioDataProcessing, LabelProcessing
-from encoding_decoding import EncodingDecoding
+from audio_label_decoding import Decode
+from audio_processing import AudioDataProcessing
 
-WEIGHT_PATH = 'weights/my_weights'
+MODEL_PATH = 'speech_to_text'
 
 
 class _STT_Service:
@@ -17,7 +15,7 @@ class _STT_Service:
 
     def preprocess(self, file_path):
         # Convert audio_file to waveform
-        waveform = EncodingDecoding().decode_audio(file_path)
+        waveform = Decode().decode_audio(file_path)
 
         # Extract db-scale spectrogram
         spectrogram = AudioDataProcessing().get_spectrogram(waveform)
@@ -36,7 +34,7 @@ class _STT_Service:
                 break
 
         #  Decode prediction result from numeric to alphabetic
-        label = EncodingDecoding().decode_label(tf.cast(dec_input, dtype=tf.int64))
+        label = Decode().decode_label(tf.cast(dec_input, dtype=tf.int64))
 
         label = b''.join(label.numpy()).decode('utf-8')
         return label
@@ -55,24 +53,6 @@ class _STT_Service:
         predict = self.decode_prediction(predict)
 
         return predict.strip()
-
-
-def create_model(optimizers):
-    model = Transformer(
-        num_hid=256,
-        num_head=4,
-        num_feed_forward=1024,
-        target_maxlen=200,
-        num_layers_enc=4,
-        num_layers_dec=1,
-        num_classes=35,
-    )
-    loss_fn = tf.keras.losses.CategoricalCrossentropy(
-        from_logits=True, label_smoothing=0.1,
-    )
-    model.compile(optimizer=optimizers, loss=loss_fn)
-
-    return model
 
 
 def STT_Service():
