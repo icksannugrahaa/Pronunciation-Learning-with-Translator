@@ -18,7 +18,7 @@ Renard Elyon Imawanto - Machine Learning.<br>
 * Android Studio 4.1 <br>
 * SDK Version 30.0.3 <br>
 
-#Tested on Device:
+# Tested on Device:
 * Android API 28 (Pie)
 
 # How to Replicate 
