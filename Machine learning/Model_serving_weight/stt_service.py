@@ -1,4 +1,7 @@
+import os
+
 import tensorflow as tf
+import tensorflow_io as tfio
 
 from tensorflow import keras
 from model import Transformer
@@ -82,14 +85,31 @@ def STT_Service():
         audio_processing = AudioDataProcessing()
         label_processing = LabelProcessing()
 
-        # Convert audio file to db-scale spectrogram
-        waveform = decoding.decode_audio('audio_initialize.wav')
-        spectrogram = audio_processing.get_spectrogram(waveform)
-        x = tf.expand_dims(spectrogram, axis=0)
+        audio_path = 'audio_initialize.wav'
+        text_path = 'text_initialize.txt'
 
-        # Encode label
-        label = label_processing.get_label('text_initialize.txt')
-        y = tf.expand_dims(label, axis=0)
+        if not os.path.exists(audio_path):
+            raise Exception("There are no {} file".format((audio_path)))
+        else:
+            # Convert audio file to waveform
+            waveform = decoding.decode_audio(audio_path)
+
+            #Trim noise in the audio waveform
+            position = tfio.audio.trim(waveform, axis=0, epsilon=0.1)
+            start = position[0]
+            stop = position[1]
+            processed = waveform[start:stop]
+
+            # Extract db-scale spectrogram from audio waveform
+            spectrogram = audio_processing.get_spectrogram(processed)
+            x = tf.expand_dims(spectrogram, axis=0)
+
+        if not os.path.exists(text_path):
+            raise Exception("There are no {} file".format((text_path)))
+        else:
+            # Encode label
+            label = label_processing.get_label(text_path)
+            y = tf.expand_dims(label, axis=0)
 
         model.train_on_batch(x, y)
         model.load_weights("weights/my_weights")
