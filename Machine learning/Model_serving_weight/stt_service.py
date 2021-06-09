@@ -5,6 +5,7 @@ import tensorflow_io as tfio
 
 from audio_label_decoding import Decode
 from audio_processing import AudioDataProcessing
+from model import Transformer
 
 MODEL_PATH = 'speech_to_text'
 
