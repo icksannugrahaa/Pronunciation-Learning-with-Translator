@@ -1,5 +1,6 @@
 package com.ninepm.english.learn.utils
 
+import android.content.Context
 import android.media.AudioFormat
 import android.media.AudioRecord
 
@@ -27,14 +28,14 @@ class RecorderService {
 
     private var output: String? = null
 
-    fun WavRecorder(path: String?, filename: String?) {
+    fun WavRecorder(path:String, filename: String) {
         bufferSize = AudioRecord.getMinBufferSize(
             RECORDER_SAMPLERATE,
             RECORDER_CHANNELS, RECORDER_AUDIO_ENCODING
         ) * 3
         audioData = ShortArray(bufferSize) // short array that pcm data is put
         // into.
-        output = StringBuilder().append("$path/$filename").toString()
+        output = "$path/$filename"
     }
 
     private fun getFilename(): String? {

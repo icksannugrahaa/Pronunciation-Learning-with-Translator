@@ -58,7 +58,7 @@ class BasicQuestionActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var viewModel: QuestionViewModel
 
     var path = StringBuilder().append("${Environment.getExternalStorageDirectory()}").toString()
-    var filename: String? = null
+    var filename: String = ""
     private val scope = MainScope()
     var job: Job? = null
     var statusQuestion: Boolean = false
@@ -110,7 +110,7 @@ class BasicQuestionActivity : AppCompatActivity(), View.OnClickListener {
             filename = StringBuilder().append("${getRandomString(20)}.wav").toString()
             editor.putString(AUDIO_ID, filename)
         } else {
-            filename = preferences.getString(AUDIO_ID, null)
+            filename = preferences.getString(AUDIO_ID, null)!!
         }
 
         recorderService.WavRecorder(path, filename)
@@ -128,37 +128,34 @@ class BasicQuestionActivity : AppCompatActivity(), View.OnClickListener {
                     showAlertExitDialog(this@BasicQuestionActivity, this@BasicQuestionActivity)
                 }
                 R.id.img_status -> {
-                    if(statusQuestion) {
+                    if (statusQuestion) {
                         startScoreActivity()
                     } else {
                         startAboutActivity()
                     }
                 }
                 R.id.img_answer_play -> {
-                    val file = File(path)
-                    if (file.exists()) {
-                        when (preferences.getString(PLAYER_STATE, "null")) {
-                            "play" -> {
-                                val editor = preferences.edit()
-                                editor.putString(PLAYER_STATE, "stop")
-                                editor.apply()
+                    when (preferences.getString(PLAYER_STATE, "null")) {
+                        "play" -> {
+                            val editor = preferences.edit()
+                            editor.putString(PLAYER_STATE, "stop")
+                            editor.apply()
 
-                                ttsService.stop()
-                            }
-                            "stop" -> {
-                                val editor = preferences.edit()
-                                editor.putString(PLAYER_STATE, "play")
-                                editor.apply()
+                            ttsService.stop()
+                        }
+                        "stop" -> {
+                            val editor = preferences.edit()
+                            editor.putString(PLAYER_STATE, "play")
+                            editor.apply()
 
-                                ttsService.speakText(tvLessonText.text.toString())
-                                imgAnswerPlay.setImageDrawable(
-                                    resources.getDrawable(
-                                        R.drawable.ic_stop_blue,
-                                        theme
-                                    )
+                            ttsService.speakText(tvLessonText.text.toString())
+                            imgAnswerPlay.setImageDrawable(
+                                resources.getDrawable(
+                                    R.drawable.ic_stop_blue,
+                                    theme
                                 )
-                                startUpdateTTS()
-                            }
+                            )
+                            startUpdateTTS()
                         }
                     }
                 }
@@ -197,7 +194,7 @@ class BasicQuestionActivity : AppCompatActivity(), View.OnClickListener {
                             this@BasicQuestionActivity
                         )
                         viewModel.predictAudio(
-                            StringBuilder().append("$path/$filename").toString(),
+                            "$path/$filename",
                             this@BasicQuestionActivity
                         ).observe(this@BasicQuestionActivity, { word ->
                             val ratio = FuzzySearch.ratio(
@@ -243,7 +240,14 @@ class BasicQuestionActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun startScoreActivity() {
         Intent(this, ScoreActivity::class.java).apply {
-            putExtra(ScoreActivity.PREDICT_DATA, PredictEntity(id = getRandomString(10),binding.tvLessonCorrection.text.toString(),binding.progressBarHorizontal.progress))
+            putExtra(
+                ScoreActivity.PREDICT_DATA,
+                PredictEntity(
+                    id = getRandomString(10),
+                    binding.tvLessonCorrection.text.toString(),
+                    binding.progressBarHorizontal.progress
+                )
+            )
             startActivity(this)
         }
         finish()
@@ -333,7 +337,7 @@ class BasicQuestionActivity : AppCompatActivity(), View.OnClickListener {
                     this@BasicQuestionActivity
                 )
                 viewModel.predictAudio(
-                    StringBuilder().append("$path/$filename").toString(),
+                    "$path/$filename",
                     this@BasicQuestionActivity
                 ).observe(this@BasicQuestionActivity, { word ->
                     val ratio = FuzzySearch.ratio(
