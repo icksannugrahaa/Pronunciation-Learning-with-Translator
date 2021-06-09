@@ -54,6 +54,22 @@ class _STT_Service:
 
         return predict.strip()
 
+def create_model(optimizers):
+    model = Transformer(
+        num_hid=256,
+        num_head=4,
+        num_feed_forward=1024,
+        target_maxlen=200,
+        num_layers_enc=4,
+        num_layers_dec=1,
+        num_classes=35,
+    )
+    loss_fn = tf.keras.losses.CategoricalCrossentropy(
+        from_logits=True, label_smoothing=0.1,
+    )
+    model.compile(optimizer=optimizers, loss=loss_fn)
+
+    return model
 
 def STT_Service():
     if _STT_Service._instance is None:
