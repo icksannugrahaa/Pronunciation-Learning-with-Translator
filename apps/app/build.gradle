@@ -1,6 +1,8 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'kotlin-parcelize'
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -32,6 +34,9 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    packagingOptions {
+        exclude 'META-INF/INDEX.LIST'
+    }
 }
 
 dependencies {
@@ -40,7 +45,13 @@ dependencies {
     implementation "androidx.core:core-ktx:$android_core_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinx_coroutines_version"
     implementation 'com.github.squti:Android-Wave-Recorder:1.6.0'
+    implementation 'fun.mike:diff-match-patch:0.0.2'
+    implementation 'me.xdrop:fuzzywuzzy:1.1.7'
 
+    //network
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
+    implementation "com.squareup.okhttp3:logging-interceptor:$logging_interceptor_version"
 
     //ui
     implementation "androidx.cardview:cardview:$cardview_version"
@@ -48,13 +59,22 @@ dependencies {
     implementation "com.google.android.material:material:$material_version"
     implementation "androidx.constraintlayout:constraintlayout:$constraint_layout_version"
     implementation "com.github.ybq:Android-SpinKit:$spin_kit_version"
+    implementation "androidx.legacy:legacy-support-v4:$legacysupport_version"
+    implementation "com.github.bumptech.glide:glide:$glide_version"
     implementation "de.hdodenhof:circleimageview:$circleimageview_version"
-
 
     //testing
     testImplementation "junit:junit:$junit_version"
     androidTestImplementation "androidx.test.ext:junit:$junit_ext_version"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_core_version"
 
-    //
+    //firebase
+    implementation platform('com.google.firebase:firebase-bom:28.0.1')
+    implementation 'com.google.firebase:firebase-analytics'
+    implementation 'com.google.firebase:firebase-auth'
+    implementation 'com.google.firebase:firebase-database'
+    implementation 'com.google.firebase:firebase-storage-ktx'
+
+    implementation "com.google.cloud:google-cloud-storage:1.36.0"
+
 }

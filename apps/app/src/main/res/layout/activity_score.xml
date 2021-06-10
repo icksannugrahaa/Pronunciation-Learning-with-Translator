@@ -29,6 +29,7 @@
         android:textSize="48sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@+id/txt_new_score"
+        app:layout_constraintHorizontal_bias="0.488"
         app:layout_constraintStart_toStartOf="@+id/txt_new_score"
         app:layout_constraintTop_toBottomOf="@+id/txt_new_score" />
 
@@ -48,31 +49,31 @@
         android:id="@+id/btn_save_score"
         android:layout_width="130dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="12dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginBottom="16dp"
         android:padding="12dp"
         android:text="@string/save"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_cancel_score"
         app:layout_constraintEnd_toEndOf="@+id/rv_score"
-        app:layout_constraintTop_toBottomOf="@+id/rv_score"
-        app:layout_constraintVertical_bias="0.795" />
+        app:layout_constraintHorizontal_bias="0.996"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/btn_cancel_score"
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/btn_cancel_score"
         android:layout_width="130dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="116dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginStart="8dp"
         android:backgroundTint="@color/white"
         android:padding="12dp"
-        android:text="@string/cancel"
+        android:text="@string/home"
         android:textColor="@color/green_200"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btn_save_score"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.007"
         app:layout_constraintStart_toStartOf="@+id/rv_score"
         app:layout_constraintTop_toBottomOf="@+id/rv_score"
-        app:layout_constraintVertical_bias="0.555" />
+        app:layout_constraintVertical_bias="0.524" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

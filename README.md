@@ -18,6 +18,9 @@ Renard Elyon Imawanto - Machine Learning.<br>
 * Android Studio 4.1 <br>
 * SDK Version 30.0.3 <br>
 
+# Tested on Device:
+* Android API 28 (Pie)
+
 # How to Replicate 
 1. Open git bash or your terminal/bash/Command Line and type "git clone https://github.com/icksannugrahaa/Pronunciation-Learning-with-Translator.git" <br>
 2. Open Android Studio App<br>

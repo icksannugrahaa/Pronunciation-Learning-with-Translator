@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "446302061236",
+    "firebase_url": "https://latihan-login-178eb-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "latihan-login-178eb",
+    "storage_bucket": "latihan-login-178eb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:446302061236:android:209a6c96c43ef413d60de1",
+        "android_client_info": {
+          "package_name": "com.ninepm.english.learn"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "446302061236-su3jh5llr4kopgo2ktsba316rl312ckc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ninepm.english.learn",
+            "certificate_hash": "e7156a7766b7c37b4521cf70b0b666c8bfa7b640"
+          }
+        },
+        {
+          "client_id": "446302061236-t3k0ig5l2pjd0kqtdfhskstbvfm5gsn1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD0uDdbkZ91bMTD1-gRyKKZFoq09yUJ1Xs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "446302061236-t3k0ig5l2pjd0kqtdfhskstbvfm5gsn1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

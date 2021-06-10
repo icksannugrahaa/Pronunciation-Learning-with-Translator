@@ -1,9 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <ProgressBar
+        android:id="@+id/progress_bar_time"
+        style="@style/CircularDeterminateProgressBar"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:visibility="gone"
+        android:progressBackgroundTint="@color/black"
+        app:layout_constraintBottom_toBottomOf="@+id/txt_question"
+        app:layout_constraintEnd_toEndOf="@+id/cv_question"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/txt_question"
+        app:layout_constraintTop_toTopOf="@+id/txt_question"
+        app:layout_constraintVertical_bias="0.428"
+        tools:progress="60" />
+
+    <TextView
+        android:id="@+id/tv_progress_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:text="@string/score"
+        app:layout_constraintBottom_toBottomOf="@+id/progress_bar_time"
+        app:layout_constraintEnd_toEndOf="@+id/progress_bar_time"
+        app:layout_constraintStart_toStartOf="@+id/progress_bar_time"
+        app:layout_constraintTop_toTopOf="@+id/progress_bar_time" />
 
     <TextView
         android:id="@+id/txt_question"
@@ -100,6 +126,7 @@
         app:cardElevation="4dp"
         app:cardMaxElevation="4dp"
         app:cardUseCompatPadding="true"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/txt_question"
         app:layout_constraintTop_toBottomOf="@+id/txt_correction">
 
@@ -109,16 +136,6 @@
             android:layout_height="wrap_content"
             android:padding="16dp">
 
-            <ImageView
-                android:id="@+id/img_answer_status"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_assignment_green"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
             <TextView
                 android:id="@+id/tv_lesson_correction"
                 android:layout_width="wrap_content"
@@ -127,51 +144,59 @@
                 android:text="@string/no_mistake_were_found"
                 android:textColor="@color/green_200"
                 android:textSize="16sp"
-                app:layout_constraintEnd_toEndOf="@+id/img_answer_status"
-                app:layout_constraintStart_toStartOf="@+id/img_answer_status"
-                app:layout_constraintTop_toBottomOf="@+id/img_answer_status" />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 
-    <ProgressBar
-        android:id="@+id/progress_bar_horizontal"
-        style="@android:style/Widget.ProgressBar.Horizontal"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="84dp"
-        android:layout_marginStart="16dp"
-        android:progress="100"
-        android:progressDrawable="@drawable/progress_bar_custom"
-        app:layout_constraintStart_toStartOf="@+id/cv_correction"
-        app:layout_constraintTop_toBottomOf="@+id/cv_correction" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cv_correction"
+        app:layout_constraintVertical_bias="1.0">
 
-    <TextView
-        android:id="@+id/tv_progress_bar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/progress"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/progress_bar_horizontal"
-        app:layout_constraintEnd_toEndOf="@id/progress_bar_horizontal"
-        app:layout_constraintHorizontal_bias="0.397"
-        app:layout_constraintStart_toStartOf="@+id/progress_bar_horizontal"
-        app:layout_constraintTop_toTopOf="@+id/progress_bar_horizontal"
-        app:layout_constraintVertical_bias="1.0" />
+        <ProgressBar
+            android:id="@+id/progress_bar_horizontal"
+            style="@android:style/Widget.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toStartOf="@+id/btn_act_record"
+            android:padding="16dp"
+            android:progress="0"
+            android:progressDrawable="@drawable/progress_bar_custom" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/btn_act_record"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="16dp"
-        android:backgroundTint="@color/green_200"
-        android:src="@drawable/ic_mic_white"
-        app:layout_constraintBottom_toBottomOf="@+id/progress_bar_horizontal"
-        app:layout_constraintEnd_toEndOf="@+id/cv_correction"
-        app:layout_constraintTop_toTopOf="@+id/progress_bar_horizontal"
-        app:layout_constraintVertical_bias="0.444"
-        android:contentDescription="@string/answer" />
+        <TextView
+            android:id="@+id/tv_progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/progress_bar_horizontal"
+            android:layout_alignParentStart="true"
+            android:gravity="center"
+            android:padding="16dp"
+            android:text="@string/progress"
+            android:textColor="@color/white"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btn_act_record"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="26dp"
+            android:backgroundTint="@color/green_200"
+            android:contentDescription="@string/answer"
+            android:src="@drawable/ic_mic_white"
+            app:layout_constraintBottom_toBottomOf="@+id/progress_bar_horizontal"
+            app:layout_constraintTop_toTopOf="@+id/progress_bar_horizontal" />
+
+    </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
