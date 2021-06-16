@@ -197,6 +197,7 @@ class BasicQuestionActivity : AppCompatActivity(), View.OnClickListener {
                             "$path/$filename",
                             this@BasicQuestionActivity
                         ).observe(this@BasicQuestionActivity, { word ->
+                            Log.d("HASIL_TEXT", word)
                             val ratio = FuzzySearch.ratio(
                                 tvLessonText.text.toString(),
                                 word
@@ -340,6 +341,7 @@ class BasicQuestionActivity : AppCompatActivity(), View.OnClickListener {
                     "$path/$filename",
                     this@BasicQuestionActivity
                 ).observe(this@BasicQuestionActivity, { word ->
+                    Log.d("HASIL_TEXT", word)
                     val ratio = FuzzySearch.ratio(
                         binding.tvLessonText.text.toString(),
                         word
