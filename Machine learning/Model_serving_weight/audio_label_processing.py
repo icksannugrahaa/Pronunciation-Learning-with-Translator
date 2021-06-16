@@ -73,6 +73,7 @@ class LabelProcessing(EncodingDecoding):
 
         # encode text file to numeric values
         label = super().encode_label(chars)
+        label = tf.cast(label, dtype=tf.int32)
 
         zero_padding = tf.zeros([self.max_length] - tf.shape(label), dtype=tf.int32)
 
